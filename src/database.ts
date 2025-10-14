@@ -1,69 +1,49 @@
-import { MongoClient, Db, Collection, Document } from 'mongodb';
-import dotenv from 'dotenv';
+import { MongoClient, Db, Collection } from "mongodb";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-class Database {
-  private static instance: Database;
-  private client: MongoClient | null = null;
-  private db: Db | null = null;
+const connectionString: string = process.env.DB_CONN_STRING || "";
+const dbName: string = process.env.DB_NAME || "Web2_2025";
+const client = new MongoClient(connectionString);
 
-  private constructor() {}
+export const collections: { users?: Collection, contacts?: Collection } = {}
 
-  static getInstance(): Database {
-    if (!Database.instance) {
-      Database.instance = new Database();
-    }
-    return Database.instance;
-  }
-
-  async connect(): Promise<void> {
-    try {
-      const uri = process.env.MONGODB_URI;
-      const dbName = process.env.DATABASE_NAME;
-
-      if (!uri || !dbName) {
-        throw new Error('MongoDB URI or database name not provided in environment variables');
-      }
-
-      this.client = new MongoClient(uri);
-      await this.client.connect();
-      this.db = this.client.db(dbName);
-      
-      console.log(`Connected to MongoDB database: ${dbName}`);
-    } catch (error) {
-      console.error('Failed to connect to MongoDB:', error);
-      throw error;
-    }
-  }
-
-  async disconnect(): Promise<void> {
-    if (this.client) {
-      await this.client.close();
-      console.log('Disconnected from MongoDB');
-    }
-  }
-
-  getDb(): Db {
-    if (!this.db) {
-      throw new Error('Database not connected. Call connect() first.');
-    }
-    return this.db;
-  }
-
-  getCollection<T extends Document = Document>(name: string): Collection<T> {
-    return this.getDb().collection<T>(name);
-  }
-
-  async ping(): Promise<boolean> {
-    try {
-      await this.getDb().admin().ping();
-      return true;
-    } catch (error) {
-      console.error('Database ping failed:', error);
-      return false;
-    }
-  }
+if (connectionString == "") {
+    throw new Error("No connection string  in .env");
 }
 
-export default Database;
+
+let db: Db;
+
+export async function initDb(): Promise<void> {
+
+    try {
+        await client.connect();
+        db = client.db(dbName);
+        const usersCollection: Collection = db.collection('users')
+        collections.users = usersCollection;
+
+        const contactsCollection: Collection = db.collection('contacts');
+        collections.contacts = contactsCollection;
+
+        console.log('connected to database')
+
+    }
+
+    catch (error) {
+        if (error instanceof Error) {
+            console.log(`issue with db connection ${error.message}`);
+        } else {
+            console.log(`error with ${error}`);
+        }
+
+    }
+
+}
+
+
+export async function closeDb(): Promise<void> {
+    await client.close();
+    console.log('Database connection closed');
+}
