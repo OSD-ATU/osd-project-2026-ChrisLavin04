@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const connectionString: string = process.env.DB_CONN_STRING || "";
-const dbName: string = process.env.DB_NAME || "Web2_2025";
+const dbName: string = process.env.DB_NAME || "FootballManagementSystem";
 const client = new MongoClient(connectionString);
 
 export const collections: { users?: Collection, contacts?: Collection } = {}
@@ -41,6 +41,9 @@ export async function initDb(): Promise<void> {
     }
 
 }
+
+// Alias for testing
+export const connectToDatabase = initDb;
 
 
 export async function closeDb(): Promise<void> {
