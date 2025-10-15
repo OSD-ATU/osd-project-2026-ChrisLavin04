@@ -1,0 +1,117 @@
+[
+  {
+    "collection": "Users",
+    "data": [
+      {
+        "user_id": "U001",
+        "username": "coach_ferguson",
+        "email": "ferguson@manchester.com",
+        "password_hash": "$2b$10$abcdefghijklmnopqrstuv1",
+        "role": "coach"
+      },
+      {
+        "user_id": "U002", 
+        "username": "coach_guardiola",
+        "email": "pep@manchester.com",
+        "password_hash": "$2b$10$abcdefghijklmnopqrstuv2",
+        "role": "coach"
+      },
+      {
+        "user_id": "U003",
+        "username": "admin_user",
+        "email": "admin@football.com", 
+        "password_hash": "$2b$10$abcdefghijklmnopqrstuv3",
+        "role": "admin"
+      }
+    ]
+  },
+  {
+    "collection": "Players", 
+    "data": [
+      {
+        "player_id": "P001",
+        "name": "Cristiano Ronaldo",
+        "position": "Forward",
+        "age": 39,
+        "team_id": "T001"
+      },
+      {
+        "player_id": "P002",
+        "name": "Marcus Rashford", 
+        "position": "Forward",
+        "age": 26,
+        "team_id": "T001"
+      },
+      {
+        "player_id": "P003",
+        "name": "Bruno Fernandes",
+        "position": "Midfielder",
+        "age": 29,
+        "team_id": "T001"
+      },
+      {
+        "player_id": "P004",
+        "name": "Erling Haaland",
+        "position": "Forward", 
+        "age": 24,
+        "team_id": "T002"
+      },
+      {
+        "player_id": "P005",
+        "name": "Kevin De Bruyne",
+        "position": "Midfielder",
+        "age": 32,
+        "team_id": "T002"
+      },
+      {
+        "player_id": "P006",
+        "name": "Phil Foden",
+        "position": "Midfielder",
+        "age": 24,
+        "team_id": "T002"
+      }
+    ]
+  },
+  {
+    "collection": "Teams",
+    "data": [
+      {
+        "team_id": "T001",
+        "name": "Manchester United",
+        "coach": "U001", 
+        "players": ["P001", "P002", "P003"]
+      },
+      {
+        "team_id": "T002",
+        "name": "Manchester City",
+        "coach": "U002",
+        "players": ["P004", "P005", "P006"]
+      }
+    ]
+  },
+  {
+    "collection": "Matches",
+    "data": [
+      {
+        "match_id": "M001",
+        "home_team_id": "T001",
+        "away_team_id": "T002", 
+        "score": {
+          "home": 2,
+          "away": 1
+        },
+        "date": "2024-10-20T15:00:00.000Z"
+      },
+      {
+        "match_id": "M002", 
+        "home_team_id": "T002",
+        "away_team_id": "T001",
+        "score": {
+          "home": 0,
+          "away": 0
+        },
+        "date": "2024-11-15T17:30:00.000Z"
+      }
+    ]
+  }
+]

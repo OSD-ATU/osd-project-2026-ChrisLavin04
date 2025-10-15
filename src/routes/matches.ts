@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { getMatches, getMatchById, createMatch, updateMatch, deleteMatch } from '../controllers/matches';
+import { validateRequest } from '../middleware/validation';
+import { createMatchSchema, updateMatchSchema } from '../validators/matchSchema';
 
 const router = Router();
 
@@ -10,10 +12,10 @@ router.get('/', getMatches);
 router.get('/:id', getMatchById);
 
 // POST create new match
-router.post('/', createMatch);
+router.post('/', validateRequest(createMatchSchema), createMatch);
 
 // PUT update match by ID
-router.put('/:id', updateMatch);
+router.put('/:id', validateRequest(updateMatchSchema), updateMatch);
 
 // DELETE match by ID
 router.delete('/:id', deleteMatch);

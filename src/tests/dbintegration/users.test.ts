@@ -21,7 +21,7 @@ describe('User API', () => {
     
 
     const res = await request(app)
-      .post('/api/v1/users')
+      .post('/api/users')
       .send(newUser)
       .expect(201);
 

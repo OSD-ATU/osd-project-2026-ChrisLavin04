@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { getTeams, getTeamById, createTeam, updateTeam, deleteTeam } from '../controllers/teams';
+import { validateRequest } from '../middleware/validation';
+import { createTeamSchema, updateTeamSchema } from '../validators/teamSchema';
 
 const router = Router();
 
@@ -10,10 +12,10 @@ router.get('/', getTeams);
 router.get('/:id', getTeamById);
 
 // POST create new team
-router.post('/', createTeam);
+router.post('/', validateRequest(createTeamSchema), createTeam);
 
 // PUT update team by ID
-router.put('/:id', updateTeam);
+router.put('/:id', validateRequest(updateTeamSchema), updateTeam);
 
 // DELETE team by ID
 router.delete('/:id', deleteTeam);

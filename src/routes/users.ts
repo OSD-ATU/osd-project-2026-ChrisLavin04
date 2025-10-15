@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { getUsers, getUserById, createUser, updateUser, deleteUser } from '../controllers/users';
+import { validateRequest } from '../middleware/validation';
+import { createUserSchema, updateUserSchema } from '../validators/userSchema';
 
 const router = Router();
 
@@ -10,10 +12,10 @@ router.get('/', getUsers);
 router.get('/:id', getUserById);
 
 // POST create new user
-router.post('/', createUser);
+router.post('/', validateRequest(createUserSchema), createUser);
 
 // PUT update user by ID
-router.put('/:id', updateUser);
+router.put('/:id', validateRequest(updateUserSchema), updateUser);
 
 // DELETE user by ID
 router.delete('/:id', deleteUser);

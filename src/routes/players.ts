@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { getPlayers, getPlayerById, createPlayer, updatePlayer, deletePlayer } from '../controllers/players';
+import { validateRequest } from '../middleware/validation';
+import { createPlayerSchema, updatePlayerSchema } from '../validators/playerSchema';
 
 const router = Router();
 
@@ -10,10 +12,10 @@ router.get('/', getPlayers);
 router.get('/:id', getPlayerById);
 
 // POST create new player
-router.post('/', createPlayer);
+router.post('/', validateRequest(createPlayerSchema), createPlayer);
 
 // PUT update player by ID
-router.put('/:id', updatePlayer);
+router.put('/:id', validateRequest(updatePlayerSchema), updatePlayer);
 
 // DELETE player by ID
 router.delete('/:id', deletePlayer);

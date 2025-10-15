@@ -1,0 +1,1109 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Football Management System API",
+    "description": "A REST API for managing football-related entities including users, players, teams, and matches. This API provides complete CRUD operations for all entities with comprehensive validation using Zod schemas.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Football Management System",
+      "email": "support@footballmanagement.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/ping": {
+      "get": {
+        "summary": "Health check endpoint",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "API is running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Football Management System API"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Get all users",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "List of all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "headers": {
+              "Location": {
+                "description": "The ID of the created user",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "summary": "Get user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^U\\d{3,}$",
+              "example": "U001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^U\\d{3,}$",
+              "example": "U001"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^U\\d{3,}$",
+              "example": "U001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/players": {
+      "get": {
+        "summary": "Get all players",
+        "tags": ["Players"],
+        "responses": {
+          "200": {
+            "description": "List of all players",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Player"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new player",
+        "tags": ["Players"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlayerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Player created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/players/{id}": {
+      "get": {
+        "summary": "Get player by ID",
+        "tags": ["Players"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Player ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^P\\d{3,}$",
+              "example": "P001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Player"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Player not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update player by ID",
+        "tags": ["Players"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Player ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^P\\d{3,}$",
+              "example": "P001"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlayerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Player updated successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "404": {
+            "description": "Player not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete player by ID",
+        "tags": ["Players"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Player ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^P\\d{3,}$",
+              "example": "P001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player deleted successfully"
+          },
+          "404": {
+            "description": "Player not found"
+          }
+        }
+      }
+    },
+    "/api/teams": {
+      "get": {
+        "summary": "Get all teams",
+        "tags": ["Teams"],
+        "responses": {
+          "200": {
+            "description": "List of all teams",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new team",
+        "tags": ["Teams"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Team created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/teams/{id}": {
+      "get": {
+        "summary": "Get team by ID",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Team ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^T\\d{3,}$",
+              "example": "T001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update team by ID",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Team ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^T\\d{3,}$",
+              "example": "T001"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeamRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Team updated successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "404": {
+            "description": "Team not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete team by ID",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Team ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^T\\d{3,}$",
+              "example": "T001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team deleted successfully"
+          },
+          "404": {
+            "description": "Team not found"
+          }
+        }
+      }
+    },
+    "/api/matches": {
+      "get": {
+        "summary": "Get all matches",
+        "tags": ["Matches"],
+        "responses": {
+          "200": {
+            "description": "List of all matches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Match"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new match",
+        "tags": ["Matches"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Match created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/matches/{id}": {
+      "get": {
+        "summary": "Get match by ID",
+        "tags": ["Matches"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Match ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^M\\d{3,}$",
+              "example": "M001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Match found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Match"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Match not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update match by ID",
+        "tags": ["Matches"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Match ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^M\\d{3,}$",
+              "example": "M001"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Match updated successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "404": {
+            "description": "Match not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete match by ID",
+        "tags": ["Matches"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Match ID",
+            "schema": {
+              "type": "string",
+              "pattern": "^M\\d{3,}$",
+              "example": "M001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Match deleted successfully"
+          },
+          "404": {
+            "description": "Match not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "MongoDB ObjectId"
+          },
+          "user_id": {
+            "type": "string",
+            "pattern": "^U\\d{3,}$",
+            "example": "U001"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50,
+            "example": "coach_john"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john.doe@example.com"
+          },
+          "password_hash": {
+            "type": "string",
+            "example": "$2b$10$abcdefghijklmnopqrstuv"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "coach", "player", "manager"],
+            "example": "coach"
+          }
+        }
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "required": ["username", "email", "password_hash", "role"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50,
+            "pattern": "^[a-zA-Z0-9_]+$",
+            "example": "coach_john"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 100,
+            "example": "john.doe@example.com"
+          },
+          "password_hash": {
+            "type": "string",
+            "minLength": 1,
+            "example": "$2b$10$abcdefghijklmnopqrstuv"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "coach", "player", "manager"],
+            "example": "coach"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "minProperties": 1,
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50,
+            "pattern": "^[a-zA-Z0-9_]+$"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 100
+          },
+          "password_hash": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "coach", "player", "manager"]
+          }
+        }
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "MongoDB ObjectId"
+          },
+          "player_id": {
+            "type": "string",
+            "pattern": "^P\\d{3,}$",
+            "example": "P001"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "example": "Lionel Messi"
+          },
+          "position": {
+            "type": "string",
+            "enum": ["Goalkeeper", "Defender", "Midfielder", "Forward"],
+            "example": "Forward"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 16,
+            "maximum": 45,
+            "example": 36
+          },
+          "team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T001"
+          }
+        }
+      },
+      "CreatePlayerRequest": {
+        "type": "object",
+        "required": ["player_id", "name", "position", "age"],
+        "properties": {
+          "player_id": {
+            "type": "string",
+            "pattern": "^P\\d{3,}$",
+            "example": "P001"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "pattern": "^[a-zA-Z\\s''-]+$",
+            "example": "Lionel Messi"
+          },
+          "position": {
+            "type": "string",
+            "enum": ["Goalkeeper", "Defender", "Midfielder", "Forward"],
+            "example": "Forward"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 16,
+            "maximum": 45,
+            "example": 36
+          },
+          "team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T001"
+          }
+        }
+      },
+      "UpdatePlayerRequest": {
+        "type": "object",
+        "minProperties": 1,
+        "properties": {
+          "player_id": {
+            "type": "string",
+            "pattern": "^P\\d{3,}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "pattern": "^[a-zA-Z\\s''-]+$"
+          },
+          "position": {
+            "type": "string",
+            "enum": ["Goalkeeper", "Defender", "Midfielder", "Forward"]
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 16,
+            "maximum": 45
+          },
+          "team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$"
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "MongoDB ObjectId"
+          },
+          "team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T001"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "example": "Manchester United"
+          },
+          "coach": {
+            "type": "string",
+            "pattern": "^U\\d{3,}$",
+            "example": "U001"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^P\\d{3,}$"
+            },
+            "maxItems": 25,
+            "example": ["P001", "P002", "P003"]
+          }
+        }
+      },
+      "CreateTeamRequest": {
+        "type": "object",
+        "required": ["team_id", "name", "coach"],
+        "properties": {
+          "team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T001"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "pattern": "^[a-zA-Z0-9\\s''-]+$",
+            "example": "Manchester United"
+          },
+          "coach": {
+            "type": "string",
+            "pattern": "^U\\d{3,}$",
+            "example": "U001"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^P\\d{3,}$"
+            },
+            "maxItems": 25,
+            "example": ["P001", "P002", "P003"]
+          }
+        }
+      },
+      "UpdateTeamRequest": {
+        "type": "object",
+        "minProperties": 1,
+        "properties": {
+          "team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "pattern": "^[a-zA-Z0-9\\s''-]+$"
+          },
+          "coach": {
+            "type": "string",
+            "pattern": "^U\\d{3,}$"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^P\\d{3,}$"
+            },
+            "maxItems": 25
+          }
+        }
+      },
+      "Match": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "MongoDB ObjectId"
+          },
+          "match_id": {
+            "type": "string",
+            "pattern": "^M\\d{3,}$",
+            "example": "M001"
+          },
+          "home_team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T001"
+          },
+          "away_team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T002"
+          },
+          "score": {
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "home": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "away": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            ],
+            "example": {
+              "home": 2,
+              "away": 1
+            }
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-01T15:00:00Z"
+          }
+        }
+      },
+      "CreateMatchRequest": {
+        "type": "object",
+        "required": ["match_id", "home_team_id", "away_team_id", "date"],
+        "properties": {
+          "match_id": {
+            "type": "string",
+            "pattern": "^M\\d{3,}$",
+            "example": "M001"
+          },
+          "home_team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T001"
+          },
+          "away_team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$",
+            "example": "T002"
+          },
+          "score": {
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "home": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "away": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            ],
+            "default": {
+              "home": 0,
+              "away": 0
+            }
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-01T15:00:00Z"
+          }
+        }
+      },
+      "UpdateMatchRequest": {
+        "type": "object",
+        "minProperties": 1,
+        "properties": {
+          "match_id": {
+            "type": "string",
+            "pattern": "^M\\d{3,}$"
+          },
+          "home_team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$"
+          },
+          "away_team_id": {
+            "type": "string",
+            "pattern": "^T\\d{3,}$"
+          },
+          "score": {
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "home": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "away": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            ]
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Validation failed"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "example": "username"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Username must be at least 3 characters long"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Health",
+      "description": "API health check"
+    },
+    {
+      "name": "Users",
+      "description": "User management operations"
+    },
+    {
+      "name": "Players",
+      "description": "Player management operations"
+    },
+    {
+      "name": "Teams",
+      "description": "Team management operations"
+    },
+    {
+      "name": "Matches",
+      "description": "Match management operations"
+    }
+  ]
+}
