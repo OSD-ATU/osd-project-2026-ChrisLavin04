@@ -1,0 +1,38 @@
+@endpoint = http://localhost:3000/api/matches
+
+
+### Get all matches
+GET http://localhost:3000/api/matches
+Content-Type: application/json
+
+### Create a new match
+POST http://localhost:3000/api/matches
+Content-Type: application/json
+
+{
+  "match_id": "M001",
+  "home_team_id": "T001",
+  "away_team_id": "T002",
+  "score": 0,
+  "date": "2024-12-01T15:00:00Z"
+}
+
+### Get a specific match by ID (replace with actual ID)
+GET http://localhost:3000/api/matches/M001
+Content-Type: application/json
+
+### Update a match by ID (replace with actual ID)
+PUT http://localhost:3000/api/matches/M001
+Content-Type: application/json
+
+{
+  "match_id": "M001",
+  "home_team_id": "T001",
+  "away_team_id": "T002",
+  "score": 1,
+  "date": "2024-12-01T15:00:00Z"
+}
+
+### Delete a match by ID (replace with actual ID)
+DELETE http://localhost:3000/api/matches/M001
+Content-Type: application/json

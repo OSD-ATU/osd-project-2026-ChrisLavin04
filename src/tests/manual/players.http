@@ -46,13 +46,13 @@ Content-Type: application/json
 ###
 
 ### Get a specific player by ID (replace with actual ID)
-GET {{{{endpoint}}}}/P001
+GET http://localhost:3000/api/players/P001
 Content-Type: application/json
 
 ###
 
 ### Update a player (replace with actual ID)
-PUT {{{{endpoint}}}}/P001
+PUT http://localhost:3000/api/players/P001
 Content-Type: application/json
 
 {
@@ -63,7 +63,7 @@ Content-Type: application/json
 ###
 
 ### Delete a player (replace with actual ID)
-DELETE {{{{endpoint}}}}/P001
+DELETE http://localhost:3000/api/players/P001
 Content-Type: application/json
 
 ###

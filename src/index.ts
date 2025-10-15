@@ -3,6 +3,7 @@ import { initDb } from './database';
 import usersRouter from './routes/users';
 import playersRouter from './routes/players';
 import teamsRouter from './routes/teams';
+import matchesRouter from './routes/matches';
 
 const PORT = process.env.PORT || 3000;
 
@@ -21,6 +22,7 @@ app.get("/ping", async (_req : Request, res: Response) => {
 app.use('/api/users', usersRouter);
 app.use('/api/players', playersRouter);
 app.use('/api/teams', teamsRouter);
+app.use('/api/matches', matchesRouter);
 
 // Initialize database and start server
 const startServer = async () => {

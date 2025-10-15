@@ -22,11 +22,14 @@ export const getPlayerById = async (req: Request, res: Response) => {
 
   let id: string = req.params.id;
   try {
-    const query = { _id: new ObjectId(id) };
+    // Query by player_id field instead of _id
+    const query = { player_id: id };
     const player = (await collections.players?.findOne(query)) as unknown as Player;
 
     if (player) {
       res.status(200).send(player);
+    } else {
+      res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
     }
   } catch (error) {
     res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
@@ -37,7 +40,7 @@ export const getPlayerById = async (req: Request, res: Response) => {
 export const createPlayer = async (req: Request, res: Response) => {
   // create a new player in the database
 
-  console.log(req.body); // for now still log the data
+  console.log(req.body); //log the data
 
   const { player_id, name, position, age, team_id } = req.body;
   const newPlayer : Player = {
@@ -76,7 +79,8 @@ export const updatePlayer = async (req: Request, res: Response) => {
   let id: string = req.params.id;
   
   try {
-    const query = { _id: new ObjectId(id) };
+    // Query by player_id field instead of _id
+    const query = { player_id: id };
     const { player_id, name, position, age, team_id } = req.body;
     
     const updateData: Partial<Player> = {};
@@ -106,7 +110,8 @@ export const deletePlayer = async (req: Request, res: Response) => {
   let id: string = req.params.id;
 
   try {
-    const query = { _id: new ObjectId(id) };
+    // Query by player_id field instead of _id
+    const query = { player_id: id };
     const result = await collections.players?.deleteOne(query);
 
     if (result && result.deletedCount > 0) {

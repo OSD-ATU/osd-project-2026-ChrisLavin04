@@ -3,6 +3,18 @@ import { collections } from '../database';
 import { User } from '../models/user'
 import { ObjectId } from 'mongodb';
 
+// Helper function to generate user ID
+const generateUserId = async (): Promise<string> => {
+  const existingUsers = await collections.users?.find({}).sort({ user_id: -1 }).limit(1).toArray();
+  if (existingUsers && existingUsers.length > 0 && existingUsers[0].user_id) {
+    const lastUserId = existingUsers[0].user_id;
+    const lastNumber = parseInt(lastUserId.substring(1));
+    const nextNumber = lastNumber + 1;
+    return `U${nextNumber.toString().padStart(3, '0')}`;
+  }
+  return 'U001';
+};
+
 
 export const getUsers = async (req: Request, res: Response) => {
 
@@ -22,11 +34,13 @@ export const getUserById = async (req: Request, res: Response) => {
 
   let id: string = req.params.id;
   try {
-    const query = { _id: new ObjectId(id) };
+    const query = { user_id: id };
     const user = (await collections.users?.findOne(query)) as unknown as User;
 
     if (user) {
       res.status(200).send(user);
+    } else {
+      res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
     }
   } catch (error) {
     res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
@@ -40,7 +54,9 @@ export const createUser = async (req: Request, res: Response) => {
   console.log(req.body); // log the data
 
   const { username, email, password_hash, role } = req.body;
+  const userId = await generateUserId();
   const newUser : User = {
+    user_id: userId,
     username: username,
     email: email,
     password_hash: password_hash,
@@ -51,7 +67,7 @@ export const createUser = async (req: Request, res: Response) => {
     const result = await collections.users?.insertOne(newUser)
 
     if (result) {
-      res.status(201).location(`${result.insertedId}`).json({ message: `Created a new user with id ${result.insertedId}` })
+      res.status(201).location(`${userId}`).json({ message: `Created a new user with id ${userId}` })
           }
     else {
       res.status(500).send("Failed to create a new user.");
@@ -75,7 +91,7 @@ export const updateUser = async (req: Request, res: Response) => {
   let id: string = req.params.id;
   
   try {
-    const query = { _id: new ObjectId(id) };
+    const query = { user_id: id };
     const { username, email, password_hash, role } = req.body;
     
     const updateData: Partial<User> = {};
@@ -104,7 +120,7 @@ export const deleteUser = async (req: Request, res: Response) => {
   let id: string = req.params.id;
 
   try {
-    const query = { _id: new ObjectId(id) };
+    const query = { user_id: id };
     const result = await collections.users?.deleteOne(query);
 
     if (result && result.deletedCount > 0) {

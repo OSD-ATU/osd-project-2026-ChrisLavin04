@@ -13,7 +13,7 @@ describe('Team API', () => {
   const newTeam = {
       "team_id": "T001",
       "name": "Manchester United",
-      "coach": "coach_john",
+      "coach": "U001",
       "players": ["P001", "P002", "P003"]
     };
 

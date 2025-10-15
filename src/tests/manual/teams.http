@@ -13,7 +13,7 @@ Content-Type: application/json
 {
   "team_id": "T001",
   "name": "Manchester United",
-  "coach": "coach_john",
+  "coach": "U001",
   "players": []
 }
 
@@ -26,7 +26,7 @@ Content-Type: application/json
 {
   "team_id": "T002",
   "name": "Liverpool FC",
-  "coach": "coach_jane",
+  "coach": "U002",
   "players": ["P004", "P005"]
 }
 
@@ -39,13 +39,13 @@ Content-Type: application/json
 {
   "team_id": "T003",
   "name": "Chelsea FC",
-  "coach": "coach_mike"
+  "coach": "U003"
 }
 
 ###
 
 ### Get a specific team by ID (replace with actual ID)
-GET {{endpoint}}/T001
+GET http://localhost:3000/api/teams/T001
 Content-Type: application/json
 
 ###
@@ -56,7 +56,7 @@ Content-Type: application/json
 
 {
   "name": "Manchester United FC",
-  "coach": "coach_john_updated",
+  "coach": "U001",
   "players": ["P001", "P002", "P003", "P006"]
 }
 
@@ -85,5 +85,5 @@ Content-Type: application/json
 {
   "team_id": "T004",
   "name": "Arsenal FC",
-  "coach": "coach_arsenal"
+  "coach": "U004"
 }

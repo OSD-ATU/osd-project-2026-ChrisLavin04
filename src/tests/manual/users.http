@@ -4,7 +4,7 @@ GET http://localhost:3000/api/users
 ###
 
 ### Get user by ID
-GET http://localhost:3000/api/users/68ef650a744bebcb51b05ae6
+GET http://localhost:3000/api/users/U001
 
 ###
 
@@ -21,21 +21,8 @@ Content-Type: application/json
 
 ###
 
-### Create new user (coach)
-POST http://localhost:3000/api/users
-Content-Type: application/json
-
-{
-  "username": "coach_jane",
-  "email": "jane.smith@example.com",
-  "password_hash": "$2b$10$xyznopqrstuvwxyzabcdefg",
-  "role": "coach"
-}
-
-###
-
 ### Update user
-PUT http://localhost:3000/api/users/670c9c7b8f1a2b1e3c9d4f10
+PUT http://localhost:3000/api/users/U001
 Content-Type: application/json
 
 {
@@ -47,4 +34,4 @@ Content-Type: application/json
 ###
 
 ### Delete user
-DELETE http://localhost:3000/api/users/68ef624abf6c74f685eff3e3
+DELETE http://localhost:3000/api/users/U002
