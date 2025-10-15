@@ -1,0 +1,89 @@
+@endpoint = http://localhost:3000/api/teams
+
+### Get all teams
+GET http://localhost:3000/api/teams
+Content-Type: application/json
+
+###
+
+### Create a new team
+POST http://localhost:3000/api/teams
+Content-Type: application/json
+
+{
+  "team_id": "T001",
+  "name": "Manchester United",
+  "coach": "coach_john",
+  "players": []
+}
+
+###
+
+### Create another team
+POST http://localhost:3000/api/teams
+Content-Type: application/json
+
+{
+  "team_id": "T002",
+  "name": "Liverpool FC",
+  "coach": "coach_jane",
+  "players": ["P004", "P005"]
+}
+
+###
+
+### Create a team with no players
+POST http://localhost:3000/api/teams
+Content-Type: application/json
+
+{
+  "team_id": "T003",
+  "name": "Chelsea FC",
+  "coach": "coach_mike"
+}
+
+###
+
+### Get a specific team by ID (replace with actual ID)
+GET {{endpoint}}/T001
+Content-Type: application/json
+
+###
+
+### Update a team (replace with actual ID)
+PUT {{endpoint}}/T001
+Content-Type: application/json
+
+{
+  "name": "Manchester United FC",
+  "coach": "coach_john_updated",
+  "players": ["P001", "P002", "P003", "P006"]
+}
+
+###
+
+### Update team - add players
+PUT {{endpoint}}/T003
+Content-Type: application/json
+
+{
+  "players": ["P007", "P008", "P009"]
+}
+
+###
+
+### Delete a team (replace with actual ID)
+DELETE {{endpoint}}/T001
+Content-Type: application/json
+
+###
+
+### Test creating team with minimal required fields
+POST {{endpoint}}
+Content-Type: application/json
+
+{
+  "team_id": "T004",
+  "name": "Arsenal FC",
+  "coach": "coach_arsenal"
+}

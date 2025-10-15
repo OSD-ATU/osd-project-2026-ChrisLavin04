@@ -1,18 +1,18 @@
-@endpoint = http://localhost:3000/api/Players
+@endpoint = http://localhost:3000/api/players
 
 ### Get all players
-GET http://localhost:3000/api/Players
+GET http://localhost:3000/api/players
 Content-Type: application/json
 
 ###
 
 ### Create a new player
-POST http://localhost:3000/api/Players
+POST http://localhost:3000/api/players
 Content-Type: application/json
 
 {
   "player_id": "P001",
-  "name": "Lionel Messi",
+  "name": "Test Player",
   "position": "Forward",
   "age": 36
 }
@@ -20,7 +20,7 @@ Content-Type: application/json
 ###
 
 ### Create another player
-POST http://localhost:3000/api/Players
+POST http://localhost:3000/api/players
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 ###
 
 ### Create a goalkeeper
-POST http://localhost:3000/api/Players
+POST http://localhost:3000/api/players
 Content-Type: application/json
 
 {

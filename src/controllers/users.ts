@@ -12,13 +12,13 @@ export const getUsers = async (req: Request, res: Response) => {
     res.status(200).json(users);
 
   } catch (error) {
-    res.status(500).send("oppss");
+    res.status(500).send("Error retrieving users");
   }
 };
 
 
 export const getUserById = async (req: Request, res: Response) => {
-  //get a single  user by ID from the database
+  // get a single user by ID from the database
 
   let id: string = req.params.id;
   try {
@@ -37,7 +37,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   // create a new user in the database
 
-  console.log(req.body); //for now still log the data
+  console.log(req.body); // log the data
 
   const { username, email, password_hash, role } = req.body;
   const newUser : User = {
