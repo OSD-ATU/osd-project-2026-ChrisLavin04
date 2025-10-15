@@ -1,0 +1,81 @@
+@endpoint = http://localhost:3000/api/Players
+
+### Get all players
+GET http://localhost:3000/api/Players
+Content-Type: application/json
+
+###
+
+### Create a new player
+POST http://localhost:3000/api/Players
+Content-Type: application/json
+
+{
+  "player_id": "P001",
+  "name": "Lionel Messi",
+  "position": "Forward",
+  "age": 36
+}
+
+###
+
+### Create another player
+POST http://localhost:3000/api/Players
+Content-Type: application/json
+
+{
+  "player_id": "P002",
+  "name": "Virgil van Dijk",
+  "position": "Defender",
+  "age": 32
+}
+
+###
+
+### Create a goalkeeper
+POST http://localhost:3000/api/Players
+Content-Type: application/json
+
+{
+  "player_id": "P003",
+  "name": "Alisson Becker",
+  "position": "Goalkeeper",
+  "age": 30
+}
+
+###
+
+### Get a specific player by ID (replace with actual ID)
+GET {{{{endpoint}}}}/P001
+Content-Type: application/json
+
+###
+
+### Update a player (replace with actual ID)
+PUT {{{{endpoint}}}}/P001
+Content-Type: application/json
+
+{
+  "name": "Lionel Messi Jr.",
+  "age": 37
+}
+
+###
+
+### Delete a player (replace with actual ID)
+DELETE {{{{endpoint}}}}/P001
+Content-Type: application/json
+
+###
+
+### Test creating player with team_id (optional field)
+POST {{{{endpoint}}}}
+Content-Type: application/json
+
+{
+  "player_id": "P004",
+  "name": "Cristiano Ronaldo",
+  "position": "Forward",
+  "age": 39,
+  "team_id": "T001"
+}
