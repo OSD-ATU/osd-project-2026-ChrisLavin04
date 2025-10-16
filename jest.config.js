@@ -11,6 +11,12 @@ const config = {
   },
   transform: {
     '^.+\\.ts$': 'ts-jest'
-  }
+  },
+  collectCoverageFrom: [
+    'src/**/*.{ts,js}',
+    '!src/**/*.test.{ts,js}',
+    '!src/tests/**/*'
+  ],
+  testTimeout: 10000
 };
 module.exports = config;

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { z, ZodError, ZodIssue } from 'zod';
 
 export const validateRequest = (schema: z.ZodSchema<any>) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     try {
       schema.parse(req.body);
       next();
@@ -13,14 +13,15 @@ export const validateRequest = (schema: z.ZodSchema<any>) => {
           message: issue.message
         }));
         
-        return res.status(400).json({
+        res.status(400).json({
           error: 'Validation failed',
           details: errorMessages
         });
+        return;
       }
       
       // Handle other types of errors
-      return res.status(500).json({
+      res.status(500).json({
         error: 'Internal server error during validation'
       });
     }
@@ -28,7 +29,7 @@ export const validateRequest = (schema: z.ZodSchema<any>) => {
 };
 
 export const validateParams = (schema: z.ZodSchema<any>) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     try {
       schema.parse(req.params);
       next();
@@ -39,13 +40,14 @@ export const validateParams = (schema: z.ZodSchema<any>) => {
           message: issue.message
         }));
         
-        return res.status(400).json({
+        res.status(400).json({
           error: 'Parameter validation failed',
           details: errorMessages
         });
+        return;
       }
       
-      return res.status(500).json({
+      res.status(500).json({
         error: 'Internal server error during parameter validation'
       });
     }
