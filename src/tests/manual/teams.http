@@ -87,3 +87,79 @@ Content-Type: application/json
   "name": "Arsenal FC",
   "coach": "U004"
 }
+
+###
+
+### ===== ERROR SCENARIO TESTS =====
+
+### 2. POST request which fails validation - Missing required fields
+POST http://localhost:3000/api/teams
+Content-Type: application/json
+
+{
+  "team_id": "T999"
+}
+
+###
+
+### POST request which fails validation - Name too short
+POST http://localhost:3000/api/teams
+Content-Type: application/json
+
+{
+  "team_id": "T998",
+  "name": "FC",
+  "coach": "U001"
+}
+
+###
+
+### POST request which fails validation - Invalid coach reference
+POST http://localhost:3000/api/teams
+Content-Type: application/json
+
+{
+  "team_id": "T997",
+  "name": "Test Team FC",
+  "coach": "InvalidCoachId"
+}
+
+###
+
+### 5. GET request on an individual resource which fails (404)
+GET http://localhost:3000/api/teams/T999
+
+###
+
+### 7. DELETE request on an individual resource which fails (404)
+DELETE http://localhost:3000/api/teams/T999
+
+###
+
+### 9. PUT request on an individual resource which fails as the resource cannot be found (404)
+PUT http://localhost:3000/api/teams/T999
+Content-Type: application/json
+
+{
+  "name": "Updated Team Name"
+}
+
+###
+
+### 10. PUT request on an individual resource which fails as the data is not valid
+PUT http://localhost:3000/api/teams/T001
+Content-Type: application/json
+
+{
+  "name": "FC"
+}
+
+###
+
+### PUT request validation failure - Invalid coach reference
+PUT http://localhost:3000/api/teams/T001
+Content-Type: application/json
+
+{
+  "coach": "InvalidCoachId"
+}

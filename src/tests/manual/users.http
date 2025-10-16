@@ -35,3 +35,84 @@ Content-Type: application/json
 
 ### Delete user
 DELETE http://localhost:3000/api/users/U002
+
+###
+
+### ===== ERROR SCENARIO TESTS =====
+
+### 2. POST request which fails validation - Invalid email
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "test_user",
+  "email": "invalid-email",
+  "password_hash": "$2b$10$abcdefghijklmnopqrstuv",
+  "role": "coach"
+}
+
+###
+
+### POST request which fails validation - Short username
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "ab",
+  "email": "test@example.com",
+  "password_hash": "$2b$10$abcdefghijklmnopqrstuv",
+  "role": "coach"
+}
+
+###
+
+### POST request which fails validation - Invalid role
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "test_user",
+  "email": "test@example.com",
+  "password_hash": "$2b$10$abcdefghijklmnopqrstuv",
+  "role": "invalid_role"
+}
+
+###
+
+### 5. GET request on an individual resource which fails (404)
+GET http://localhost:3000/api/users/U999
+
+###
+
+### 7. DELETE request on an individual resource which fails (404)
+DELETE http://localhost:3000/api/users/U999
+
+###
+
+### 9. PUT request on an individual resource which fails as the resource cannot be found (404)
+PUT http://localhost:3000/api/users/U999
+Content-Type: application/json
+
+{
+  "username": "updated_name"
+}
+
+###
+
+### 10. PUT request on an individual resource which fails as the data is not valid
+PUT http://localhost:3000/api/users/U001
+Content-Type: application/json
+
+{
+  "email": "invalid-email-format"
+}
+
+###
+
+### PUT request validation failure - Invalid role
+PUT http://localhost:3000/api/users/U001
+Content-Type: application/json
+
+{
+  "role": "invalid_role"
+}

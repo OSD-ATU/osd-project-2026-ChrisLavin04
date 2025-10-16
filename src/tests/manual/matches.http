@@ -36,3 +36,98 @@ Content-Type: application/json
 ### Delete a match by ID (replace with actual ID)
 DELETE http://localhost:3000/api/matches/M001
 Content-Type: application/json
+
+###
+
+### ===== ERROR SCENARIO TESTS =====
+
+### 2. POST request which fails validation - Missing required fields
+POST http://localhost:3000/api/matches
+Content-Type: application/json
+
+{
+  "match_id": "M999"
+}
+
+###
+
+### POST request which fails validation - Invalid team references
+POST http://localhost:3000/api/matches
+Content-Type: application/json
+
+{
+  "match_id": "M998",
+  "home_team_id": "InvalidTeam",
+  "away_team_id": "T002",
+  "score": 0,
+  "date": "2024-12-01T15:00:00Z"
+}
+
+###
+
+### POST request which fails validation - Same home and away team
+POST http://localhost:3000/api/matches
+Content-Type: application/json
+
+{
+  "match_id": "M997",
+  "home_team_id": "T001",
+  "away_team_id": "T001",
+  "score": 0,
+  "date": "2024-12-01T15:00:00Z"
+}
+
+###
+
+### POST request which fails validation - Invalid date format
+POST http://localhost:3000/api/matches
+Content-Type: application/json
+
+{
+  "match_id": "M996",
+  "home_team_id": "T001",
+  "away_team_id": "T002",
+  "score": 0,
+  "date": "invalid-date"
+}
+
+###
+
+### 5. GET request on an individual resource which fails (404)
+GET http://localhost:3000/api/matches/M999
+
+###
+
+### 7. DELETE request on an individual resource which fails (404)
+DELETE http://localhost:3000/api/matches/M999
+
+###
+
+### 9. PUT request on an individual resource which fails as the resource cannot be found (404)
+PUT http://localhost:3000/api/matches/M999
+Content-Type: application/json
+
+{
+  "score": 2
+}
+
+###
+
+### 10. PUT request on an individual resource which fails as the data is not valid
+PUT http://localhost:3000/api/matches/M001
+Content-Type: application/json
+
+{
+  "home_team_id": "T001",
+  "away_team_id": "T001"
+}
+
+###
+
+### PUT request validation failure - Invalid score
+PUT http://localhost:3000/api/matches/M001
+Content-Type: application/json
+
+{
+  "score": -1
+}
