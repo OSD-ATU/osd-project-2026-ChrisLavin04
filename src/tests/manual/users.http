@@ -28,7 +28,7 @@ Content-Type: application/json
 {
   "username": "coach_john_updated",
   "email": "john.doe.updated@example.com",
-  "role": "head_coach"
+  "role": "manager"
 }
 
 ###
