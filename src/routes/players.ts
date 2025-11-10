@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getPlayers, getPlayerById, createPlayer, updatePlayer, deletePlayer } from '../controllers/players';
+import { getPlayers, getPlayerById, createPlayer, updatePlayer, deletePlayer, deleteAllPlayers } from '../controllers/players';
 import { validateRequest } from '../middleware/validation';
 import { createPlayerSchema, updatePlayerSchema } from '../validators/playerSchema';
 
@@ -16,6 +16,9 @@ router.post('/', validateRequest(createPlayerSchema), createPlayer);
 
 // PUT update player by ID
 router.put('/:id', validateRequest(updatePlayerSchema), updatePlayer);
+
+// DELETE all players
+router.delete('/', deleteAllPlayers);
 
 // DELETE player by ID
 router.delete('/:id', deletePlayer);

@@ -119,3 +119,21 @@ export const deleteMatch = async (req: Request, res: Response) => {
         return res.status(500).send("Error deleting match");
     }
 };
+
+export const deleteAllMatches = async (req: Request, res: Response) => {
+    // delete all matches from the database
+    try {
+        const result = await collections.matches?.deleteMany({});
+        if (result && result.deletedCount !== undefined) {
+            return res.status(200).json({ 
+                message: `Successfully deleted ${result.deletedCount} matches`,
+                deletedCount: result.deletedCount
+            });
+        } else {
+            return res.status(500).send("Error deleting matches");
+        }
+    } catch (error) {
+        console.error('Error deleting all matches:', error);
+        return res.status(500).send("Error deleting matches");
+    }
+};

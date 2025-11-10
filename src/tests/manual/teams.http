@@ -70,7 +70,11 @@ Content-Type: application/json
 ###
 
 ### Delete a team (replace with actual ObjectId)
-DELETE {{endpoint}}/507f1f77bcf86cd799439011
+DELETE {{endpoint}}/691251b2f029e72857dca135
+Content-Type: application/json
+
+### Delete ALL teams (WARNING: This will delete all teams in the database!)
+DELETE http://localhost:3000/api/teams
 Content-Type: application/json
 
 ###

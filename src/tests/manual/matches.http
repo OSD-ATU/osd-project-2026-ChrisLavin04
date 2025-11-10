@@ -10,8 +10,8 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "home_team_id": "T001",
-  "away_team_id": "T002",
+  "home_team_id": "507f1f77bcf86cd799439011",
+  "away_team_id": "507f1f77bcf86cd799439012",
   "score": 0,
   "date": "2024-12-01T15:00:00Z"
 }
@@ -25,14 +25,18 @@ PUT http://localhost:3000/api/matches/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {
-  "home_team_id": "T001",
-  "away_team_id": "T002",
+  "home_team_id": "507f1f77bcf86cd799439011",
+  "away_team_id": "507f1f77bcf86cd799439012",
   "score": 1,
   "date": "2024-12-01T15:00:00Z"
 }
 
 ### Delete a match by ID (replace with actual ObjectId)
 DELETE http://localhost:3000/api/matches/507f1f77bcf86cd799439011
+Content-Type: application/json
+
+### Delete ALL matches (WARNING: This will delete all matches in the database!)
+DELETE http://localhost:3000/api/matches
 Content-Type: application/json
 
 ###
@@ -44,7 +48,7 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "home_team_id": "T001"
+  "home_team_id": "507f1f77bcf86cd799439011"
 }
 
 ###
@@ -54,8 +58,8 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "home_team_id": "InvalidTeam",
-  "away_team_id": "T002",
+  "home_team_id": "InvalidTeamId",
+  "away_team_id": "507f1f77bcf86cd799439012",
   "score": 0,
   "date": "2024-12-01T15:00:00Z"
 }
@@ -67,8 +71,8 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "home_team_id": "T001",
-  "away_team_id": "T001",
+  "home_team_id": "507f1f77bcf86cd799439011",
+  "away_team_id": "507f1f77bcf86cd799439011",
   "score": 0,
   "date": "2024-12-01T15:00:00Z"
 }
@@ -80,8 +84,8 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "home_team_id": "T001",
-  "away_team_id": "T002",
+  "home_team_id": "507f1f77bcf86cd799439011",
+  "away_team_id": "507f1f77bcf86cd799439012",
   "score": 0,
   "date": "invalid-date"
 }
@@ -113,8 +117,8 @@ PUT http://localhost:3000/api/matches/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {
-  "home_team_id": "T001",
-  "away_team_id": "T001"
+  "home_team_id": "507f1f77bcf86cd799439011",
+  "away_team_id": "507f1f77bcf86cd799439011"
 }
 
 ###

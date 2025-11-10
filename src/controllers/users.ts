@@ -139,3 +139,21 @@ export const deleteUser = async (req: Request, res: Response) => {
     return res.status(400).send(`Unable to delete user with id ${id}`);
   }
 };
+
+export const deleteAllUsers = async (req: Request, res: Response) => {
+  // delete all users from the database
+  try {
+    const result = await collections.users?.deleteMany({});
+    if (result && result.deletedCount !== undefined) {
+      return res.status(200).json({ 
+        message: `Successfully deleted ${result.deletedCount} users`,
+        deletedCount: result.deletedCount
+      });
+    } else {
+      return res.status(500).send("Error deleting users");
+    }
+  } catch (error) {
+    console.error('Error deleting all users:', error);
+    return res.status(500).send("Error deleting users");
+  }
+};

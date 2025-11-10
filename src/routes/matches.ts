@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getMatches, getMatchById, createMatch, updateMatch, deleteMatch } from '../controllers/matches';
+import { getMatches, getMatchById, createMatch, updateMatch, deleteMatch, deleteAllMatches } from '../controllers/matches';
 import { validateRequest } from '../middleware/validation';
 import { createMatchSchema, updateMatchSchema } from '../validators/matchSchema';
 
@@ -16,6 +16,9 @@ router.post('/', validateRequest(createMatchSchema), createMatch);
 
 // PUT update match by ID
 router.put('/:id', validateRequest(updateMatchSchema), updateMatch);
+
+// DELETE all matches
+router.delete('/', deleteAllMatches);
 
 // DELETE match by ID
 router.delete('/:id', deleteMatch);

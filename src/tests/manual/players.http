@@ -63,6 +63,10 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/players/507f1f77bcf86cd799439011
 Content-Type: application/json
 
+### Delete ALL players (WARNING: This will delete all players in the database!)
+DELETE http://localhost:3000/api/players
+Content-Type: application/json
+
 ###
 
 ### Test creating player with team_id (optional field)

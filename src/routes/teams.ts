@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getTeams, getTeamById, createTeam, updateTeam, deleteTeam } from '../controllers/teams';
+import { getTeams, getTeamById, createTeam, updateTeam, deleteTeam, deleteAllTeams } from '../controllers/teams';
 import { validateRequest } from '../middleware/validation';
 import { createTeamSchema, updateTeamSchema } from '../validators/teamSchema';
 
@@ -16,6 +16,9 @@ router.post('/', validateRequest(createTeamSchema), createTeam);
 
 // PUT update team by ID
 router.put('/:id', validateRequest(updateTeamSchema), updateTeam);
+
+// DELETE all teams
+router.delete('/', deleteAllTeams);
 
 // DELETE team by ID
 router.delete('/:id', deleteTeam);

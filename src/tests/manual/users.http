@@ -36,6 +36,10 @@ Content-Type: application/json
 ### Delete user (replace with actual ObjectId from create response)
 DELETE http://localhost:3000/api/users/507f1f77bcf86cd799439012
 
+### Delete ALL users (WARNING: This will delete all users in the database!)
+DELETE http://localhost:3000/api/users
+Content-Type: application/json
+
 ###
 
 ### ===== ERROR SCENARIO TESTS =====
