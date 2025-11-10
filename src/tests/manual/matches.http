@@ -10,31 +10,29 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "match_id": "M001",
   "home_team_id": "T001",
   "away_team_id": "T002",
   "score": 0,
   "date": "2024-12-01T15:00:00Z"
 }
 
-### Get a specific match by ID (replace with actual ID)
-GET http://localhost:3000/api/matches/M001
+### Get a specific match by ID (replace with actual ObjectId from create response)
+GET http://localhost:3000/api/matches/507f1f77bcf86cd799439011
 Content-Type: application/json
 
-### Update a match by ID (replace with actual ID)
-PUT http://localhost:3000/api/matches/M001
+### Update a match by ID (replace with actual ObjectId)
+PUT http://localhost:3000/api/matches/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {
-  "match_id": "M001",
   "home_team_id": "T001",
   "away_team_id": "T002",
   "score": 1,
   "date": "2024-12-01T15:00:00Z"
 }
 
-### Delete a match by ID (replace with actual ID)
-DELETE http://localhost:3000/api/matches/M001
+### Delete a match by ID (replace with actual ObjectId)
+DELETE http://localhost:3000/api/matches/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 ###
@@ -46,7 +44,7 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "match_id": "M999"
+  "home_team_id": "T001"
 }
 
 ###
@@ -56,7 +54,6 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "match_id": "M998",
   "home_team_id": "InvalidTeam",
   "away_team_id": "T002",
   "score": 0,
@@ -70,7 +67,6 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "match_id": "M997",
   "home_team_id": "T001",
   "away_team_id": "T001",
   "score": 0,
@@ -84,7 +80,6 @@ POST http://localhost:3000/api/matches
 Content-Type: application/json
 
 {
-  "match_id": "M996",
   "home_team_id": "T001",
   "away_team_id": "T002",
   "score": 0,
@@ -94,17 +89,17 @@ Content-Type: application/json
 ###
 
 ### 5. GET request on an individual resource which fails (404)
-GET http://localhost:3000/api/matches/M999
+GET http://localhost:3000/api/matches/507f1f77bcf86cd799439999
 
 ###
 
 ### 7. DELETE request on an individual resource which fails (404)
-DELETE http://localhost:3000/api/matches/M999
+DELETE http://localhost:3000/api/matches/507f1f77bcf86cd799439999
 
 ###
 
 ### 9. PUT request on an individual resource which fails as the resource cannot be found (404)
-PUT http://localhost:3000/api/matches/M999
+PUT http://localhost:3000/api/matches/507f1f77bcf86cd799439999
 Content-Type: application/json
 
 {
@@ -114,7 +109,7 @@ Content-Type: application/json
 ###
 
 ### 10. PUT request on an individual resource which fails as the data is not valid
-PUT http://localhost:3000/api/matches/M001
+PUT http://localhost:3000/api/matches/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {
@@ -125,7 +120,7 @@ Content-Type: application/json
 ###
 
 ### PUT request validation failure - Invalid score
-PUT http://localhost:3000/api/matches/M001
+PUT http://localhost:3000/api/matches/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {

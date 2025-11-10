@@ -22,17 +22,21 @@ export const getPlayerById = async (req: Request, res: Response) => {
 
   let id: string = req.params.id;
   try {
-    // Query by player_id field instead of _id
-    const query = { player_id: id };
+    // Validate ObjectId format
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send(`Invalid player ID format: ${id}`);
+    }
+
+    const query = { _id: new ObjectId(id) };
     const player = (await collections.players?.findOne(query)) as unknown as Player;
 
     if (player) {
-      res.status(200).send(player);
+      return res.status(200).json(player);
     } else {
-      res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
+      return res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
     }
   } catch (error) {
-    res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
+    return res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
   }
 };
 
@@ -42,9 +46,8 @@ export const createPlayer = async (req: Request, res: Response) => {
 
   console.log(req.body); //log the data
 
-  const { player_id, name, position, age, team_id } = req.body;
-  const newPlayer : Player = {
-    player_id: player_id,
+  const { name, position, age, team_id } = req.body;
+  const newPlayer: Player = {
     name: name,
     position: position,
     age: age,
@@ -52,25 +55,25 @@ export const createPlayer = async (req: Request, res: Response) => {
   }
 
   try {
-    const result = await collections.players?.insertOne(newPlayer)
+    const result = await collections.players?.insertOne(newPlayer);
 
-    if (result) {
-      res.status(201).location(`${result.insertedId}`).json({ message: `Created a new player with id ${result.insertedId}` })
-          }
-    else {
+    if (result && result.insertedId) {
+      const createdPlayer = await collections.players?.findOne({ _id: result.insertedId }) as Player;
+      res.status(201).location(`${result.insertedId}`).json({
+        message: `Created a new player with id ${result.insertedId}`,
+        player: createdPlayer
+      });
+    } else {
       res.status(500).send("Failed to create a new player.");
     }
-  }
-catch (error) {
-    if (error instanceof Error)
-    {
-     console.log(`issue with inserting ${error.message}`);
-    }
-    else{
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(`issue with inserting ${error.message}`);
+    } else {
       console.log(`error with ${error}`)
     }
     res.status(400).send(`Unable to create new player`);
-}
+  }
 };
 
 
@@ -79,12 +82,15 @@ export const updatePlayer = async (req: Request, res: Response) => {
   let id: string = req.params.id;
   
   try {
-    // Query by player_id field instead of _id
-    const query = { player_id: id };
-    const { player_id, name, position, age, team_id } = req.body;
+    // Validate ObjectId format
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send(`Invalid player ID format: ${id}`);
+    }
+
+    const query = { _id: new ObjectId(id) };
+    const { name, position, age, team_id } = req.body;
     
     const updateData: Partial<Player> = {};
-    if (player_id) updateData.player_id = player_id;
     if (name) updateData.name = name;
     if (position) updateData.position = position;
     if (age) updateData.age = age;
@@ -93,14 +99,18 @@ export const updatePlayer = async (req: Request, res: Response) => {
     const result = await collections.players?.updateOne(query, { $set: updateData });
 
     if (result && result.modifiedCount > 0) {
-      res.status(200).json({ message: `Successfully updated player with id ${id}` });
+      const updatedPlayer = await collections.players?.findOne(query) as Player;
+      return res.status(200).json({ 
+        message: `Successfully updated player with id ${id}`,
+        player: updatedPlayer
+      });
     } else if (result && result.matchedCount === 0) {
-      res.status(404).send(`Player with id ${id} not found`);
+      return res.status(404).send(`Player with id ${id} not found`);
     } else {
-      res.status(304).send(`Player with id ${id} not updated`);
+      return res.status(304).send(`Player with id ${id} not updated`);
     }
   } catch (error) {
-    res.status(400).send(`Unable to update player with id ${id}`);
+    return res.status(400).send(`Unable to update player with id ${id}`);
   }
 };
 
@@ -110,16 +120,20 @@ export const deletePlayer = async (req: Request, res: Response) => {
   let id: string = req.params.id;
 
   try {
-    // Query by player_id field instead of _id
-    const query = { player_id: id };
+    // Validate ObjectId format
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send(`Invalid player ID format: ${id}`);
+    }
+
+    const query = { _id: new ObjectId(id) };
     const result = await collections.players?.deleteOne(query);
 
     if (result && result.deletedCount > 0) {
-      res.status(200).json({ message: `Successfully deleted player with id ${id}` });
+      return res.status(200).json({ message: `Successfully deleted player with id ${id}` });
     } else {
-      res.status(404).send(`Player with id ${id} not found`);
+      return res.status(404).send(`Player with id ${id} not found`);
     }
   } catch (error) {
-    res.status(400).send(`Unable to delete player with id ${id}`);
+    return res.status(400).send(`Unable to delete player with id ${id}`);
   }
 };

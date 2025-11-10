@@ -9,18 +9,13 @@ const scoreSchema = z.union([
 ]);
 
 export const createMatchSchema = z.object({
-  match_id: z.string()
-    .min(1, { message: "Match ID is required" })
-    .max(20, { message: "Match ID must be at most 20 characters long" })
-    .regex(/^M\d{3,}$/, { message: "Match ID must follow format M001, M002, etc." }),
-  
   home_team_id: z.string()
     .min(1, { message: "Home team ID is required" })
-    .regex(/^T\d{3,}$/, { message: "Home team ID must follow format T001, T002, etc." }),
+    .regex(/^[0-9a-fA-F]{24}$/, { message: "Home team ID must be a valid ObjectId" }),
   
   away_team_id: z.string()
     .min(1, { message: "Away team ID is required" })
-    .regex(/^T\d{3,}$/, { message: "Away team ID must follow format T001, T002, etc." }),
+    .regex(/^[0-9a-fA-F]{24}$/, { message: "Away team ID must be a valid ObjectId" }),
   
   score: scoreSchema.optional().default({ home: 0, away: 0 }),
   
@@ -34,20 +29,14 @@ export const createMatchSchema = z.object({
 });
 
 export const updateMatchSchema = z.object({
-  match_id: z.string()
-    .min(1, { message: "Match ID is required" })
-    .max(20, { message: "Match ID must be at most 20 characters long" })
-    .regex(/^M\d{3,}$/, { message: "Match ID must follow format M001, M002, etc." })
-    .optional(),
-  
   home_team_id: z.string()
     .min(1, { message: "Home team ID is required" })
-    .regex(/^T\d{3,}$/, { message: "Home team ID must follow format T001, T002, etc." })
+    .regex(/^[0-9a-fA-F]{24}$/, { message: "Home team ID must be a valid ObjectId" })
     .optional(),
   
   away_team_id: z.string()
     .min(1, { message: "Away team ID is required" })
-    .regex(/^T\d{3,}$/, { message: "Away team ID must follow format T001, T002, etc." })
+    .regex(/^[0-9a-fA-F]{24}$/, { message: "Away team ID must be a valid ObjectId" })
     .optional(),
   
   score: scoreSchema.optional(),

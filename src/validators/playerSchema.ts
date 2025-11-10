@@ -1,11 +1,6 @@
 import { z } from 'zod';
 
 export const createPlayerSchema = z.object({
-  player_id: z.string()
-    .min(1, { message: "Player ID is required" })
-    .max(20, { message: "Player ID must be at most 20 characters long" })
-    .regex(/^P\d{3,}$/, { message: "Player ID must follow format P001, P002, etc." }),
-  
   name: z.string()
     .min(2, { message: "Player name must be at least 2 characters long" })
     .max(100, { message: "Player name must be at most 100 characters long" })
@@ -21,17 +16,11 @@ export const createPlayerSchema = z.object({
     .max(45, { message: "Player cannot be older than 45 years" }),
   
   team_id: z.string()
-    .regex(/^T\d{3,}$/, { message: "Team ID must follow format T001, T002, etc." })
+    .regex(/^[0-9a-fA-F]{24}$/, { message: "Team ID must be a valid ObjectId" })
     .optional()
 });
 
 export const updatePlayerSchema = z.object({
-  player_id: z.string()
-    .min(1, { message: "Player ID is required" })
-    .max(20, { message: "Player ID must be at most 20 characters long" })
-    .regex(/^P\d{3,}$/, { message: "Player ID must follow format P001, P002, etc." })
-    .optional(),
-  
   name: z.string()
     .min(2, { message: "Player name must be at least 2 characters long" })
     .max(100, { message: "Player name must be at most 100 characters long" })
@@ -49,7 +38,7 @@ export const updatePlayerSchema = z.object({
     .optional(),
   
   team_id: z.string()
-    .regex(/^T\d{3,}$/, { message: "Team ID must follow format T001, T002, etc." })
+    .regex(/^[0-9a-fA-F]{24}$/, { message: "Team ID must be a valid ObjectId" })
     .optional()
 }).refine((data) => Object.keys(data).length > 0, {
   message: "At least one field must be provided for update"

@@ -17,24 +17,28 @@ export const getMatchById = async (req: Request, res: Response) => {
     // get a single match by ID from the database
     let matchId: string = req.params.id;
     try {
-        const query = { match_id: matchId };
+        // Validate ObjectId format
+        if (!ObjectId.isValid(matchId)) {
+            return res.status(400).send(`Invalid match ID format: ${matchId}`);
+        }
+
+        const query = { _id: new ObjectId(matchId) };
         const match = (await collections.matches?.findOne(query)) as unknown as Match;
         if (match) {
-            res.status(200).send(match);
+            return res.status(200).json(match);
         } else {
-            res.status(404).send("Match not found");
+            return res.status(404).send("Match not found");
         }
     } catch (error) {
-        res.status(404).send(`Unable to find matching document with match_id: ${req.params.id}`);
+        return res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
     }
 };
 export const createMatch = async (req: Request, res: Response) => {
     // create a new match in the database
     console.log(req.body); //log the data
 
-    const { match_id, home_team_id, away_team_id, date, score } = req.body;
+    const { home_team_id, away_team_id, date, score } = req.body;
     const newMatch: Match = {
-        match_id: match_id,
         home_team_id: home_team_id,
         away_team_id: away_team_id,
         date: date,
@@ -42,9 +46,15 @@ export const createMatch = async (req: Request, res: Response) => {
     }
 
     try {
-        const result = await collections.matches?.insertOne(newMatch)
-        if (result) {
-            res.status(201).location(`${result.insertedId}`).json({ message: `Created a new match with id ${result.insertedId}` })
+        const result = await collections.matches?.insertOne(newMatch);
+        if (result && result.insertedId) {
+            const createdMatch = await collections.matches?.findOne({ _id: result.insertedId }) as Match;
+            res.status(201).location(`${result.insertedId}`).json({
+                message: `Created a new match with id ${result.insertedId}`,
+                match: createdMatch
+            });
+        } else {
+            res.status(500).send("Failed to create a new match.");
         }
     } catch (error) {
         res.status(500).send("Error creating match");
@@ -54,40 +64,58 @@ export const createMatch = async (req: Request, res: Response) => {
 export const updateMatch = async (req: Request, res: Response) => {
     // update a match by ID in the database
     let matchId: string = req.params.id;
-    const { match_id, home_team_id, away_team_id, date, score } = req.body;
-    const updatedMatch: Match = {
-        match_id: match_id,
-        home_team_id: home_team_id,
-        away_team_id: away_team_id,
-        date: date,
-        score: score
-    };
+    
     try {
-        const query = { match_id: matchId };
-        const result = await collections.matches?.updateOne(query, { $set: updatedMatch });
-        if (result && result.matchedCount) {
-            res.status(200).send(`Updated match with match_id: ${matchId}`);
+        // Validate ObjectId format
+        if (!ObjectId.isValid(matchId)) {
+            return res.status(400).send(`Invalid match ID format: ${matchId}`);
+        }
+
+        const query = { _id: new ObjectId(matchId) };
+        const { home_team_id, away_team_id, date, score } = req.body;
+        
+        const updateData: Partial<Match> = {};
+        if (home_team_id) updateData.home_team_id = home_team_id;
+        if (away_team_id) updateData.away_team_id = away_team_id;
+        if (date) updateData.date = date;
+        if (score) updateData.score = score;
+
+        const result = await collections.matches?.updateOne(query, { $set: updateData });
+        
+        if (result && result.modifiedCount > 0) {
+            const updatedMatch = await collections.matches?.findOne(query) as Match;
+            return res.status(200).json({ 
+                message: `Successfully updated match with id ${matchId}`,
+                match: updatedMatch
+            });
+        } else if (result && result.matchedCount === 0) {
+            return res.status(404).send(`Match with id ${matchId} not found`);
         } else {
-            res.status(404).send(`Match with match_id: ${matchId} not found`);
+            return res.status(304).send(`Match with id ${matchId} not updated`);
         }
     } catch (error) {
         console.error('Error updating match:', error);
-        res.status(500).send("Error updating match");
+        return res.status(500).send("Error updating match");
     }
 };
 export const deleteMatch = async (req: Request, res: Response) => {
     // delete a match by ID from the database
     let matchId: string = req.params.id;
     try {
-        const query = { match_id: matchId };
+        // Validate ObjectId format
+        if (!ObjectId.isValid(matchId)) {
+            return res.status(400).send(`Invalid match ID format: ${matchId}`);
+        }
+
+        const query = { _id: new ObjectId(matchId) };
         const result = await collections.matches?.deleteOne(query);
         if (result && result.deletedCount) {
-            res.status(200).send(`Deleted match with match_id: ${matchId}`);
+            return res.status(200).json({ message: `Successfully deleted match with id ${matchId}` });
         } else {
-            res.status(404).send(`Match with match_id: ${matchId} not found`);
+            return res.status(404).send(`Match with id ${matchId} not found`);
         }
     } catch (error) {
         console.error('Error deleting match:', error);
-        res.status(500).send("Error deleting match");
+        return res.status(500).send("Error deleting match");
     }
 };

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+// Schema for creating users - accepts password_hash (pre-hashed by client)
 export const createUserSchema = z.object({
   username: z.string()
     .min(3, { message: "Username must be at least 3 characters long" })
@@ -18,6 +19,7 @@ export const createUserSchema = z.object({
   })
 });
 
+// Schema for updating users - password_hash is optional
 export const updateUserSchema = z.object({
   username: z.string()
     .min(3, { message: "Username must be at least 3 characters long" })

@@ -11,9 +11,8 @@ POST http://localhost:3000/api/teams
 Content-Type: application/json
 
 {
-  "team_id": "T001",
   "name": "Manchester United",
-  "coach": "U001",
+  "coach": "507f1f77bcf86cd799439011",
   "players": []
 }
 
@@ -24,10 +23,9 @@ POST http://localhost:3000/api/teams
 Content-Type: application/json
 
 {
-  "team_id": "T002",
   "name": "Liverpool FC",
-  "coach": "U002",
-  "players": ["P004", "P005"]
+  "coach": "507f1f77bcf86cd799439012",
+  "players": ["507f1f77bcf86cd799439013", "507f1f77bcf86cd799439014"]
 }
 
 ###
@@ -37,43 +35,42 @@ POST http://localhost:3000/api/teams
 Content-Type: application/json
 
 {
-  "team_id": "T003",
   "name": "Chelsea FC",
-  "coach": "U003"
+  "coach": "507f1f77bcf86cd799439015"
 }
 
 ###
 
-### Get a specific team by ID (replace with actual ID)
-GET http://localhost:3000/api/teams/T001
+### Get a specific team by ID (replace with actual ObjectId from create response)
+GET http://localhost:3000/api/teams/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 ###
 
-### Update a team (replace with actual ID)
-PUT {{endpoint}}/T001
+### Update a team (replace with actual ObjectId)
+PUT {{endpoint}}/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {
   "name": "Manchester United FC",
-  "coach": "U001",
-  "players": ["P001", "P002", "P003", "P006"]
+  "coach": "507f1f77bcf86cd799439011",
+  "players": ["507f1f77bcf86cd799439016", "507f1f77bcf86cd799439017", "507f1f77bcf86cd799439018", "507f1f77bcf86cd799439019"]
 }
 
 ###
 
-### Update team - add players
-PUT {{endpoint}}/T003
+### Update team - add players (replace with actual ObjectId)
+PUT {{endpoint}}/507f1f77bcf86cd799439012
 Content-Type: application/json
 
 {
-  "players": ["P007", "P008", "P009"]
+  "players": ["507f1f77bcf86cd799439020", "507f1f77bcf86cd799439021", "507f1f77bcf86cd799439022"]
 }
 
 ###
 
-### Delete a team (replace with actual ID)
-DELETE {{endpoint}}/T001
+### Delete a team (replace with actual ObjectId)
+DELETE {{endpoint}}/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 ###
@@ -83,9 +80,8 @@ POST {{endpoint}}
 Content-Type: application/json
 
 {
-  "team_id": "T004",
   "name": "Arsenal FC",
-  "coach": "U004"
+  "coach": "507f1f77bcf86cd799439023"
 }
 
 ###
@@ -97,7 +93,7 @@ POST http://localhost:3000/api/teams
 Content-Type: application/json
 
 {
-  "team_id": "T999"
+  "name": "Invalid Team"
 }
 
 ###
@@ -107,9 +103,8 @@ POST http://localhost:3000/api/teams
 Content-Type: application/json
 
 {
-  "team_id": "T998",
   "name": "FC",
-  "coach": "U001"
+  "coach": "507f1f77bcf86cd799439011"
 }
 
 ###
@@ -119,7 +114,6 @@ POST http://localhost:3000/api/teams
 Content-Type: application/json
 
 {
-  "team_id": "T997",
   "name": "Test Team FC",
   "coach": "InvalidCoachId"
 }
@@ -127,17 +121,17 @@ Content-Type: application/json
 ###
 
 ### 5. GET request on an individual resource which fails (404)
-GET http://localhost:3000/api/teams/T999
+GET http://localhost:3000/api/teams/507f1f77bcf86cd799439999
 
 ###
 
 ### 7. DELETE request on an individual resource which fails (404)
-DELETE http://localhost:3000/api/teams/T999
+DELETE http://localhost:3000/api/teams/507f1f77bcf86cd799439999
 
 ###
 
 ### 9. PUT request on an individual resource which fails as the resource cannot be found (404)
-PUT http://localhost:3000/api/teams/T999
+PUT http://localhost:3000/api/teams/507f1f77bcf86cd799439999
 Content-Type: application/json
 
 {
@@ -147,7 +141,7 @@ Content-Type: application/json
 ###
 
 ### 10. PUT request on an individual resource which fails as the data is not valid
-PUT http://localhost:3000/api/teams/T001
+PUT http://localhost:3000/api/teams/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {
@@ -157,7 +151,7 @@ Content-Type: application/json
 ###
 
 ### PUT request validation failure - Invalid coach reference
-PUT http://localhost:3000/api/teams/T001
+PUT http://localhost:3000/api/teams/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {

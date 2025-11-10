@@ -3,8 +3,8 @@ GET http://localhost:3000/api/users
 
 ###
 
-### Get user by ID
-GET http://localhost:3000/api/users/U001
+### Get user by ID (replace with actual ObjectId from create response)
+GET http://localhost:3000/api/users/507f1f77bcf86cd799439011
 
 ###
 
@@ -21,8 +21,8 @@ Content-Type: application/json
 
 ###
 
-### Update user
-PUT http://localhost:3000/api/users/U001
+### Update user (replace with actual ObjectId from create response)
+PUT http://localhost:3000/api/users/507f1f77bcf86cd799439011
 Content-Type: application/json
 
 {
@@ -33,8 +33,8 @@ Content-Type: application/json
 
 ###
 
-### Delete user
-DELETE http://localhost:3000/api/users/U002
+### Delete user (replace with actual ObjectId from create response)
+DELETE http://localhost:3000/api/users/507f1f77bcf86cd799439012
 
 ###
 

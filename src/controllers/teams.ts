@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { collections } from '../database';
 import { Team } from '../models/team';
+import { ObjectId } from 'mongodb';
 
 
 export const getTeams = async (req: Request, res: Response) => {
@@ -21,16 +22,21 @@ export const getTeamById = async (req: Request, res: Response) => {
 
   let id: string = req.params.id;
   try {
-    const query = { team_id: id };
+    // Validate ObjectId format
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send(`Invalid team ID format: ${id}`);
+    }
+
+    const query = { _id: new ObjectId(id) };
     const team = (await collections.teams?.findOne(query)) as unknown as Team;
 
     if (team) {
-      res.status(200).send(team);
+      return res.status(200).json(team);
     } else {
-      res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
+      return res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
     }
   } catch (error) {
-    res.status(500).send(`Error retrieving team with id: ${req.params.id}`);
+    return res.status(500).send(`Error retrieving team with id: ${req.params.id}`);
   }
 };
 
@@ -40,34 +46,33 @@ export const createTeam = async (req: Request, res: Response) => {
 
   console.log(req.body); //log the data
 
-  const { team_id, name, coach, players } = req.body;
-  const newTeam : Team = {
-    team_id: team_id,
+  const { name, coach, players } = req.body;
+  const newTeam: Team = {
     name: name,
     coach: coach,
     players: players || [] // Default to empty array if not provided
   }
 
   try {
-    const result = await collections.teams?.insertOne(newTeam)
+    const result = await collections.teams?.insertOne(newTeam);
 
-    if (result) {
-      res.status(201).location(`${result.insertedId}`).json({ message: `Created a new team with id ${result.insertedId}` })
-          }
-    else {
+    if (result && result.insertedId) {
+      const createdTeam = await collections.teams?.findOne({ _id: result.insertedId }) as Team;
+      res.status(201).location(`${result.insertedId}`).json({
+        message: `Created a new team with id ${result.insertedId}`,
+        team: createdTeam
+      });
+    } else {
       res.status(500).send("Failed to create a new team.");
     }
-  }
-catch (error) {
-    if (error instanceof Error)
-    {
-     console.log(`issue with inserting ${error.message}`);
-    }
-    else{
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(`issue with inserting ${error.message}`);
+    } else {
       console.log(`error with ${error}`)
     }
     res.status(400).send(`Unable to create new team`);
-}
+  }
 };
 
 
@@ -76,11 +81,15 @@ export const updateTeam = async (req: Request, res: Response) => {
   let id: string = req.params.id;
   
   try {
-    const query = { team_id: id };
-    const { team_id, name, coach, players } = req.body;
+    // Validate ObjectId format
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send(`Invalid team ID format: ${id}`);
+    }
+
+    const query = { _id: new ObjectId(id) };
+    const { name, coach, players } = req.body;
     
     const updateData: Partial<Team> = {};
-    if (team_id) updateData.team_id = team_id;
     if (name) updateData.name = name;
     if (coach) updateData.coach = coach;
     if (players) updateData.players = players;
@@ -88,14 +97,18 @@ export const updateTeam = async (req: Request, res: Response) => {
     const result = await collections.teams?.updateOne(query, { $set: updateData });
 
     if (result && result.modifiedCount > 0) {
-      res.status(200).json({ message: `Successfully updated team with id ${id}` });
+      const updatedTeam = await collections.teams?.findOne(query) as Team;
+      return res.status(200).json({ 
+        message: `Successfully updated team with id ${id}`,
+        team: updatedTeam
+      });
     } else if (result && result.matchedCount === 0) {
-      res.status(404).send(`Team with id ${id} not found`);
+      return res.status(404).send(`Team with id ${id} not found`);
     } else {
-      res.status(304).send(`Team with id ${id} not updated`);
+      return res.status(304).send(`Team with id ${id} not updated`);
     }
   } catch (error) {
-    res.status(400).send(`Unable to update team with id ${id}`);
+    return res.status(400).send(`Unable to update team with id ${id}`);
   }
 };
 
@@ -105,15 +118,20 @@ export const deleteTeam = async (req: Request, res: Response) => {
   let id: string = req.params.id;
 
   try {
-    const query = { team_id: id };
+    // Validate ObjectId format
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send(`Invalid team ID format: ${id}`);
+    }
+
+    const query = { _id: new ObjectId(id) };
     const result = await collections.teams?.deleteOne(query);
 
     if (result && result.deletedCount > 0) {
-      res.status(200).json({ message: `Successfully deleted team with id ${id}` });
+      return res.status(200).json({ message: `Successfully deleted team with id ${id}` });
     } else {
-      res.status(404).send(`Team with id ${id} not found`);
+      return res.status(404).send(`Team with id ${id} not found`);
     }
   } catch (error) {
-    res.status(400).send(`Unable to delete team with id ${id}`);
+    return res.status(400).send(`Unable to delete team with id ${id}`);
   }
 };
