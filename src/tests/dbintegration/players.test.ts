@@ -11,10 +11,10 @@ describe('Player API', () => {
   });
   
   const newPlayer = {
-      "player_id": "P001",
       "name": "John Smith",
       "position": "Forward",
-      "age": 25
+      "age": 25,
+      "team_id": "507f1f77bcf86cd799439011"
     };
 
   test('should create a player and return Location header', async () => {
