@@ -1,4 +1,5 @@
 import express, {Application, Request, Response} from "express" ;
+import cors from 'cors';
 import { initDb } from './database';
 import usersRouter from './routes/users';
 import playersRouter from './routes/players';
@@ -10,6 +11,10 @@ const PORT = process.env.PORT || 3000;
 export const app: Application = express();
 
 // Middleware
+app.use(cors({
+    origin: 'http://localhost:4200', // Angular development server
+    credentials: true
+}));
 app.use(express.json());
 
 // Routes
