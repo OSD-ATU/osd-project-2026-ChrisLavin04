@@ -6,8 +6,8 @@ export const createTeamSchema = z.object({
     .max(100, { message: "Team name must be at most 100 characters long" })
     .regex(/^[a-zA-Z0-9\s'-]+$/, { message: "Team name can only contain letters, numbers, spaces, hyphens, and apostrophes" }),
   
-  coach: z.string()
-    .min(1, { message: "Coach is required" })
+  coach: z.string({ required_error: "Coach is required", invalid_type_error: "Coach must be a string" })
+    .min(1, { message: "Coach cannot be empty" })
     .regex(/^[0-9a-fA-F]{24}$/, { message: "Coach must be a valid ObjectId" }),
   
   players: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, { message: "Each player ID must be a valid ObjectId" }))
@@ -23,8 +23,8 @@ export const updateTeamSchema = z.object({
     .regex(/^[a-zA-Z0-9\s'-]+$/, { message: "Team name can only contain letters, numbers, spaces, hyphens, and apostrophes" })
     .optional(),
   
-  coach: z.string()
-    .min(1, { message: "Coach is required" })
+  coach: z.string({ invalid_type_error: "Coach must be a string" })
+    .min(1, { message: "Coach cannot be empty" })
     .regex(/^[0-9a-fA-F]{24}$/, { message: "Coach must be a valid ObjectId" })
     .optional(),
   
