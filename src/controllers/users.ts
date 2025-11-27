@@ -4,6 +4,8 @@ import { User, UserResponse, toUserResponse } from '../models/user'
 import { ObjectId } from 'mongodb';
 
 
+
+// Get all users from the database
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = (await collections.users?.find({}).toArray()) as unknown as User[];
@@ -15,12 +17,12 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 
-export const getUserById = async (req: Request, res: Response) => {
-  // get a single user by ID from the database
 
+// Get a single user by ID
+export const getUserById = async (req: Request, res: Response) => {
   let id: string = req.params.id;
   try {
-    // Validate ObjectId format
+    // Check if the ID is valid
     if (!ObjectId.isValid(id)) {
       return res.status(400).send(`Invalid user ID format: ${id}`);
     }
@@ -40,9 +42,9 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 
-export const createUser = async (req: Request, res: Response) => {
-  // create a new user in the database
 
+// Create a new user in the database
+export const createUser = async (req: Request, res: Response) => {
   console.log(req.body); // log the data
 
   const { username, email, password_hash, role } = req.body;
@@ -77,19 +79,19 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 
+
+// Update a user by ID
 export const updateUser = async (req: Request, res: Response) => {
-  
   let id: string = req.params.id;
-  
   try {
-    // Validate ObjectId format
+    // Check if the ID is valid
     if (!ObjectId.isValid(id)) {
       return res.status(400).send(`Invalid user ID format: ${id}`);
     }
 
     const query = { _id: new ObjectId(id) };
     const { username, email, password_hash, role } = req.body;
-    
+    // Only update fields that are provided
     const updateData: Partial<User> = {};
     if (username) updateData.username = username;
     if (email) updateData.email = email;
@@ -116,13 +118,12 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+
+// Delete a user by ID
 export const deleteUser = async (req: Request, res: Response) => {
-  // logic to delete user by ID from the database
-
   let id: string = req.params.id;
-
   try {
-    // Validate ObjectId format
+    // Check if the ID is valid
     if (!ObjectId.isValid(id)) {
       return res.status(400).send(`Invalid user ID format: ${id}`);
     }
@@ -140,8 +141,9 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+
+// Delete all users from the database
 export const deleteAllUsers = async (req: Request, res: Response) => {
-  // delete all users from the database
   try {
     const result = await collections.users?.deleteMany({});
     if (result && result.deletedCount !== undefined) {

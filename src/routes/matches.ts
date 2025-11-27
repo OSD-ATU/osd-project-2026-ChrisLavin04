@@ -1,3 +1,4 @@
+// Express routes for match endpoints
 import { Router } from 'express';
 import { getMatches, getMatchById, createMatch, updateMatch, deleteMatch, deleteAllMatches } from '../controllers/matches';
 import { validateRequest } from '../middleware/validation';

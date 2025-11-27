@@ -9,17 +9,17 @@ const scoreSchema = z.union([
 ]);
 
 export const createMatchSchema = z.object({
-  home_team_id: z.string()
+  home_team_id: z.string() // Validate Home Team ID
     .min(1, { message: "Home team ID is required" })
     .regex(/^[0-9a-fA-F]{24}$/, { message: "Home team ID must be a valid ObjectId" }),
   
-  away_team_id: z.string()
+  away_team_id: z.string() // Validate Away Team ID
     .min(1, { message: "Away team ID is required" })
     .regex(/^[0-9a-fA-F]{24}$/, { message: "Away team ID must be a valid ObjectId" }),
   
-  score: scoreSchema.optional().default({ home: 0, away: 0 }),
+    score: scoreSchema.optional().default({ home: 0, away: 0 }), // Validate Score
   
-  date: z.string()
+  date: z.string() // Validate Date
     .datetime({ message: "Date must be a valid ISO datetime string" })
     .or(z.date())
     .transform((val) => new Date(val))
@@ -29,19 +29,19 @@ export const createMatchSchema = z.object({
 });
 
 export const updateMatchSchema = z.object({
-  home_team_id: z.string()
+  home_team_id: z.string() // Validate Home Team ID
     .min(1, { message: "Home team ID is required" })
     .regex(/^[0-9a-fA-F]{24}$/, { message: "Home team ID must be a valid ObjectId" })
     .optional(),
   
-  away_team_id: z.string()
+  away_team_id: z.string() // Validate Away Team ID
     .min(1, { message: "Away team ID is required" })
     .regex(/^[0-9a-fA-F]{24}$/, { message: "Away team ID must be a valid ObjectId" })
     .optional(),
   
   score: scoreSchema.optional(),
   
-  date: z.string()
+  date: z.string() // Validate Date
     .datetime({ message: "Date must be a valid ISO datetime string" })
     .or(z.date())
     .transform((val) => new Date(val))

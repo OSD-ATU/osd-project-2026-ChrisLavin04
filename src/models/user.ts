@@ -1,14 +1,17 @@
 import { ObjectId } from 'mongodb';
 
+
+// User object stored in the database
 export interface User {
-  _id?: ObjectId;
+  _id?: ObjectId; // MongoDB ID
   username: string;
   email: string;
   password_hash: string;
   role: string;
 }
 
-// Interface for API responses (excludes password_hash)
+
+// User object sent in API responses (no password)
 export interface UserResponse {
   _id: ObjectId;
   username: string;
@@ -16,7 +19,8 @@ export interface UserResponse {
   role: string;
 }
 
-// Helper function to convert User to UserResponse
+
+// Convert a User to a UserResponse (removes password)
 export const toUserResponse = (user: User): UserResponse => {
   return {
     _id: user._id!,

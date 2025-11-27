@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 export interface Player {
+  // Player object for database and API
   _id?: ObjectId;
   name: string;
   position: string;

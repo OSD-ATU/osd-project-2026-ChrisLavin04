@@ -1,3 +1,4 @@
+// Express routes for team endpoints
 import { Router } from 'express';
 import { getTeams, getTeamById, createTeam, updateTeam, deleteTeam, deleteAllTeams } from '../controllers/teams';
 import { validateRequest } from '../middleware/validation';

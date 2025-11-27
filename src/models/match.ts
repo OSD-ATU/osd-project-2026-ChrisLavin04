@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 export interface Match {
+  // Match object for database and API
   _id?: ObjectId;
   home_team_id: string;
   away_team_id: string;

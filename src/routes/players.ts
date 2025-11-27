@@ -1,3 +1,4 @@
+// Express routes for player endpoints
 import { Router } from 'express';
 import { getPlayers, getPlayerById, createPlayer, updatePlayer, deletePlayer, deleteAllPlayers } from '../controllers/players';
 import { validateRequest } from '../middleware/validation';

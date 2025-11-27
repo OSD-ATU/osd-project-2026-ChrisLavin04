@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 export const app: Application = express();
 
 // Middleware
+// Main entry point for the Express app
 app.use(cors({
     origin: 'http://localhost:4200', // Angular development server
     credentials: true
