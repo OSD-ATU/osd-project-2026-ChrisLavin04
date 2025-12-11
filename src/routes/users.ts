@@ -7,16 +7,17 @@ import { authenticateToken, requireAdmin } from '../middleware/auth.middleware';
 const router = Router();
 
 // GET all users
-router.get('/', getUsers);
+// Only admins can view users
+router.get('/', authenticateToken, requireAdmin, getUsers);
 
 // GET user by ID
-router.get('/:id', getUserById);
+router.get('/:id', authenticateToken, requireAdmin, getUserById);
 
 // POST create new user (admin only)
 router.post('/', authenticateToken, requireAdmin, validateRequest(createUserSchema), createUser);
 
 // PUT update user by ID (authenticated users)
-router.put('/:id', authenticateToken, validateRequest(updateUserSchema), updateUser);
+router.put('/:id', authenticateToken, requireAdmin, validateRequest(updateUserSchema), updateUser);
 
 // DELETE all users (admin only)
 router.delete('/', authenticateToken, requireAdmin, deleteAllUsers);

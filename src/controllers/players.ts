@@ -89,12 +89,19 @@ export const updatePlayer = async (req: Request, res: Response) => {
 
     const query = { _id: new ObjectId(id) };
     const { name, position, age, team_id } = req.body;
-    
     const updateData: Partial<Player> = {};
     if (name) updateData.name = name;
     if (position) updateData.position = position;
     if (age) updateData.age = age;
-    if (team_id) updateData.team_id = team_id;
+    // Only coaches can update team_id
+    const userRole = (req as any).user?.role;
+    if (team_id) {
+      if (userRole === 'coach') {
+        updateData.team_id = team_id;
+      } else {
+        return res.status(403).send('Only coaches can add players to teams');
+      }
+    }
 
     const result = await collections.players?.updateOne(query, { $set: updateData });
 

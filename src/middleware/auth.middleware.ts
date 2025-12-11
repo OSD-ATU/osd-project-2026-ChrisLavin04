@@ -70,3 +70,55 @@ export const requireAdmin = (
 
   next();
 };
+
+// Middleware to check if user has coach role
+export const requireCoach = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const authReq = req as AuthRequest;
+  if (!authReq.user) {
+    res.status(401).json({ message: 'Authentication required' });
+    return;
+  }
+  if (authReq.user.role !== 'coach') {
+    res.status(403).json({ message: 'Coach access required' });
+    return;
+  }
+  next();
+};
+
+// Middleware to check if user has player role (for view-only)
+export const requirePlayer = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const authReq = req as AuthRequest;
+  if (!authReq.user) {
+    res.status(401).json({ message: 'Authentication required' });
+    return;
+  }
+  if (authReq.user.role !== 'player') {
+    res.status(403).json({ message: 'Player access required' });
+    return;
+  }
+  next();
+};
+
+// Middleware to check if user has one of allowed roles
+export const requireRoles = (roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const authReq = req as AuthRequest;
+    if (!authReq.user) {
+      res.status(401).json({ message: 'Authentication required' });
+      return;
+    }
+    if (!roles.includes(authReq.user.role)) {
+      res.status(403).json({ message: `Access requires one of: ${roles.join(', ')}` });
+      return;
+    }
+    next();
+  };
+};

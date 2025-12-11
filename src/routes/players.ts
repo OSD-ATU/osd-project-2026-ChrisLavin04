@@ -3,26 +3,30 @@ import { Router } from 'express';
 import { getPlayers, getPlayerById, createPlayer, updatePlayer, deletePlayer, deleteAllPlayers } from '../controllers/players';
 import { validateRequest } from '../middleware/validation';
 import { createPlayerSchema, updatePlayerSchema } from '../validators/playerSchema';
-import { authenticateToken, requireAdmin } from '../middleware/auth.middleware';
+import { authenticateToken, requireCoach, requireAdmin, requireRoles } from '../middleware/auth.middleware';
 
 const router = Router();
 
 // GET all players
-router.get('/', getPlayers);
+// Players, coaches, and admins can view
+router.get('/', authenticateToken, requireRoles(['player', 'coach', 'admin']), getPlayers);
 
 // GET player by ID
-router.get('/:id', getPlayerById);
+router.get('/:id', authenticateToken, requireRoles(['player', 'coach', 'admin']), getPlayerById);
 
 // POST create new player (authenticated users)
-router.post('/', authenticateToken, validateRequest(createPlayerSchema), createPlayer);
+// Coaches and admins can create players
+router.post('/', authenticateToken, requireRoles(['coach', 'admin']), validateRequest(createPlayerSchema), createPlayer);
 
 // PUT update player by ID (authenticated users)
-router.put('/:id', authenticateToken, validateRequest(updatePlayerSchema), updatePlayer);
+// Coaches and admins can update players
+router.put('/:id', authenticateToken, requireRoles(['coach', 'admin']), validateRequest(updatePlayerSchema), updatePlayer);
 
 // DELETE all players (admin only)
 router.delete('/', authenticateToken, requireAdmin, deleteAllPlayers);
 
 // DELETE player by ID (authenticated users)
-router.delete('/:id', authenticateToken, deletePlayer);
+// Admins can delete players
+router.delete('/:id', authenticateToken, requireAdmin, deletePlayer);
 
 export default router;
