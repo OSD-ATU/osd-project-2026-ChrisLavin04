@@ -15,8 +15,8 @@ export const createUserSchema = z.object({
   password_hash: z.string()
     .min(1, { message: "Password hash is required" }),
   
-  role: z.enum(['admin', 'coach', 'player', 'manager'], {
-    message: "Role must be one of: admin, coach, player, manager"
+  role: z.enum(['admin', 'coach', 'player'], {
+    message: "Role must be one of: admin, coach, player"
   })
 });
 
