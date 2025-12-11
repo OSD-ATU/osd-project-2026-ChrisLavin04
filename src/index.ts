@@ -1,6 +1,7 @@
 import express, {Application, Request, Response} from "express" ;
 import cors from 'cors';
 import { initDb } from './database';
+import authRouter from './routes/auth';
 import usersRouter from './routes/users';
 import playersRouter from './routes/players';
 import teamsRouter from './routes/teams';
@@ -25,6 +26,7 @@ app.get("/ping", async (_req : Request, res: Response) => {
     });
 });
 
+app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/players', playersRouter);
 app.use('/api/teams', teamsRouter);

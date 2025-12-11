@@ -1,16 +1,18 @@
-### Get all users
+### Get all users (public)
 GET http://localhost:3000/api/users
 
 ###
 
-### Get user by ID (replace with actual ObjectId from create response)
+### Get user by ID (public - replace with actual ObjectId from create response)
 GET http://localhost:3000/api/users/69125186f029e72857dca134
 
 ###
 
-### Create new user (coach)
+### Create new user (REQUIRES ADMIN TOKEN)
+# First login as admin to get a token, then replace YOUR_ADMIN_TOKEN_HERE
 POST http://localhost:3000/api/users
 Content-Type: application/json
+Authorization: Bearer YOUR_ADMIN_TOKEN_HERE
 
 {
   "username": "coach_john",
@@ -21,9 +23,10 @@ Content-Type: application/json
 
 ###
 
-### Update user (replace with actual ObjectId from create response)
+### Update user (REQUIRES AUTH TOKEN - replace with actual ObjectId and token)
 PUT http://localhost:3000/api/users/507f1f77bcf86cd799439011
 Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
 
 {
   "username": "coach_john_updated",
@@ -33,12 +36,45 @@ Content-Type: application/json
 
 ###
 
-### Delete user (replace with actual ObjectId from create response)
+### Delete user (REQUIRES ADMIN TOKEN - replace with actual ObjectId and admin token)
 DELETE http://localhost:3000/api/users/507f1f77bcf86cd799439012
+Authorization: Bearer YOUR_ADMIN_TOKEN_HERE
 
-### Delete ALL users (WARNING: This will delete all users in the database!)
+###
+
+### Delete ALL users (WARNING: REQUIRES ADMIN TOKEN - This will delete all users!)
 DELETE http://localhost:3000/api/users
 Content-Type: application/json
+Authorization: Bearer YOUR_ADMIN_TOKEN_HERE
+
+###
+
+### ===== AUTHENTICATION ERROR TESTS =====
+
+### Create user without token (should fail with 401)
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "no_auth_user",
+  "email": "noauth@example.com",
+  "password_hash": "$2b$10$abcdefghijklmnopqrstuv",
+  "role": "coach"
+}
+
+###
+
+### Create user with regular user token (should fail with 403)
+POST http://localhost:3000/api/users
+Content-Type: application/json
+Authorization: Bearer YOUR_USER_TOKEN_HERE
+
+{
+  "username": "unauthorized_user",
+  "email": "unauthorized@example.com",
+  "password_hash": "$2b$10$abcdefghijklmnopqrstuv",
+  "role": "coach"
+}
 
 ###
 
