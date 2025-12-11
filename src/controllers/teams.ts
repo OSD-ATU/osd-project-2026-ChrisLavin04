@@ -7,10 +7,25 @@ import { ObjectId } from 'mongodb';
 export const getTeams = async (req: Request, res: Response) => {
 
   try {
-
+    // Get all teams
     const teams = (await collections.teams?.find({}).toArray()) as unknown as Team[];
-    res.status(200).json(teams);
-
+    // Get all unique coach IDs
+    const coachIds = Array.from(new Set(teams.map(team => team.coach)));
+    // Fetch all coach user objects
+    const coaches = await collections.users?.find({ _id: { $in: coachIds.map(id => new ObjectId(id)) } }).toArray();
+    // Map coachId to username
+    const coachMap: Record<string, string> = {};
+    if (coaches) {
+      for (const coach of coaches) {
+        coachMap[coach._id.toString()] = coach.username;
+      }
+    }
+    // Attach coach username to each team
+    const teamsWithCoachName = teams.map(team => ({
+      ...team,
+      coachUsername: coachMap[team.coach] || 'N/A'
+    }));
+    res.status(200).json(teamsWithCoachName);
   } catch (error) {
     res.status(500).send("Error retrieving teams");
   }
