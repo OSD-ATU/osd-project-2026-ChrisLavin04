@@ -10,14 +10,14 @@ const router = Router();
 // Only admins can view users
 router.get('/', authenticateToken, requireAdmin, getUsers);
 
-// GET user by ID
-router.get('/:id', authenticateToken, requireAdmin, getUserById);
+// GET user by ID: allow user to get their own details, admin can get any
+router.get('/:id', authenticateToken, getUserById);
 
 // POST create new user (admin only)
 router.post('/', authenticateToken, requireAdmin, validateRequest(createUserSchema), createUser);
 
-// PUT update user by ID (authenticated users)
-router.put('/:id', authenticateToken, requireAdmin, validateRequest(updateUserSchema), updateUser);
+// PUT update user by ID: allow user to update their own account, admin can update any
+router.put('/:id', authenticateToken, validateRequest(updateUserSchema), updateUser);
 
 // DELETE all users (admin only)
 router.delete('/', authenticateToken, requireAdmin, deleteAllUsers);

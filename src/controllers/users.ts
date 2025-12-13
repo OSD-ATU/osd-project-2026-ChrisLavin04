@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { collections } from '../database';
 import { User, UserResponse, toUserResponse } from '../models/user'
 import { ObjectId } from 'mongodb';
+import bcrypt from 'bcryptjs';
 
 
 
@@ -27,11 +28,20 @@ export const getUserById = async (req: Request, res: Response) => {
       return res.status(400).send(`Invalid user ID format: ${id}`);
     }
 
-    const query = { _id: new ObjectId(id) };
-    const user = (await collections.users?.findOne(query)) as unknown as User;
+    // Only allow user to get their own account, or admin to get any
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).send('Authentication required');
+    }
+    if (user.role !== 'admin' && user.userId !== id) {
+      return res.status(403).send('You can only view your own account');
+    }
 
-    if (user) {
-      const userResponse = toUserResponse(user);
+    const query = { _id: new ObjectId(id) };
+    const foundUser = (await collections.users?.findOne(query)) as unknown as User;
+
+    if (foundUser) {
+      const userResponse = toUserResponse(foundUser);
       return res.status(200).json(userResponse);
     } else {
       return res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
@@ -95,8 +105,21 @@ export const updateUser = async (req: Request, res: Response) => {
     const updateData: Partial<User> = {};
     if (username) updateData.username = username;
     if (email) updateData.email = email;
-    if (password_hash) updateData.password_hash = password_hash;
+    if (password_hash) {
+      // Hash the new password before saving
+      const salt = await bcrypt.genSalt(10);
+      updateData.password_hash = await bcrypt.hash(password_hash, salt);
+    }
     if (role) updateData.role = role;
+
+    // Only allow user to update their own account, or admin to update any
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).send('Authentication required');
+    }
+    if (user.role !== 'admin' && user.userId !== id) {
+      return res.status(403).send('You can only update your own account');
+    }
 
     const result = await collections.users?.updateOne(query, { $set: updateData });
 
