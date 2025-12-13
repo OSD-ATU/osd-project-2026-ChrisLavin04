@@ -46,7 +46,15 @@ export const getTeamById = async (req: Request, res: Response) => {
     const team = (await collections.teams?.findOne(query)) as unknown as Team;
 
     if (team) {
-      return res.status(200).json(team);
+      // Populate coach username
+      let coachUsername = 'User not found';
+      if (team.coach) {
+        const coachUser = await collections.users?.findOne({ _id: new ObjectId(team.coach) });
+        if (coachUser && coachUser.username) {
+          coachUsername = coachUser.username;
+        }
+      }
+      return res.status(200).json({ ...team, coachUsername });
     } else {
       return res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
     }
