@@ -93,13 +93,13 @@ export const updatePlayer = async (req: Request, res: Response) => {
     if (name) updateData.name = name;
     if (position) updateData.position = position;
     if (age) updateData.age = age;
-    // Only coaches can update team_id
+    // Coaches and admins can update team_id
     const userRole = (req as any).user?.role;
     if (team_id) {
-      if (userRole === 'coach') {
+      if (userRole === 'coach' || userRole === 'admin') {
         updateData.team_id = team_id;
       } else {
-        return res.status(403).send('Only coaches can add players to teams');
+        return res.status(403).send('Only coaches or admins can add players to teams');
       }
     }
 
