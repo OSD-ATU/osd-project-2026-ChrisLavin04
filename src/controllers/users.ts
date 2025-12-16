@@ -58,14 +58,25 @@ export const createUser = async (req: Request, res: Response) => {
   console.log(req.body); // log the data
 
   const { username, email, password_hash, role } = req.body;
-  const newUser: User = {
-    username: username,
-    email: email,
-    password_hash: password_hash,
-    role: role
-  }
-
+  // Check for duplicate email or username
   try {
+    const existingUser = await collections.users?.findOne({
+      $or: [
+        { email: email },
+        { username: username }
+      ]
+    });
+    if (existingUser) {
+      return res.status(409).json({ message: "Username or email is already used by another user. Please change credentials and try again." });
+    }
+
+    const newUser: User = {
+      username: username,
+      email: email,
+      password_hash: password_hash,
+      role: role
+    }
+
     const result = await collections.users?.insertOne(newUser);
 
     if (result && result.insertedId) {
@@ -86,6 +97,7 @@ export const createUser = async (req: Request, res: Response) => {
     }
     res.status(400).send(`Unable to create new user`);
   }
+  return;
 };
 
 
