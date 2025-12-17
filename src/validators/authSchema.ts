@@ -11,8 +11,8 @@ export const registerSchema = z.object({
     .max(100, { message: 'Email must be at most 100 characters' }),
   password: z.string()
     .min(6, { message: 'Password must be at least 6 characters' }),
-  role: z.enum(['admin', 'coach', 'player', 'manager'], {
-    message: 'Role must be one of: admin, coach, player, manager'
+  role: z.enum(['admin', 'coach', 'player'], {
+    message: 'Role must be one of: admin, coach, player'
   }).optional().default('player')
 });
 

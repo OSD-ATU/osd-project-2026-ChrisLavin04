@@ -41,8 +41,8 @@ export const updateUserSchema = z.object({
     .min(1, { message: "Password hash is required" })
     .optional(),
   // Role: must be one of the allowed values if present
-  role: z.enum(['admin', 'coach', 'player', 'manager'], {
-    message: "Role must be one of: admin, coach, player, manager"
+  role: z.enum(['admin', 'coach', 'player'], {
+    message: "Role must be one of: admin, coach, player"
   }).optional()
 }).refine((data) => Object.keys(data).length > 0, {
   message: "At least one field must be provided for update"
