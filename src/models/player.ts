@@ -7,4 +7,7 @@ export interface Player {
   position: string;
   age: number;
   team_id?: string; // Keep team_id as reference to team ObjectId
+  goals?: number;
+  assists?: number;
+  matchesPlayed?: number;
 }

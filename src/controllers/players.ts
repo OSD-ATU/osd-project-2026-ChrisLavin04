@@ -46,12 +46,15 @@ export const createPlayer = async (req: Request, res: Response) => {
 
   console.log(req.body); //log the data
 
-  const { name, position, age, team_id } = req.body;
+  const { name, position, age, team_id, goals, assists, matchesPlayed } = req.body;
   const newPlayer: Player = {
     name: name,
     position: position,
     age: age,
-    team_id: team_id
+    team_id: team_id,
+    goals: typeof goals === 'number' ? goals : 0,
+    assists: typeof assists === 'number' ? assists : 0,
+    matchesPlayed: typeof matchesPlayed === 'number' ? matchesPlayed : 0
   }
 
   try {
@@ -78,9 +81,7 @@ export const createPlayer = async (req: Request, res: Response) => {
 
 
 export const updatePlayer = async (req: Request, res: Response) => {
-  
   let id: string = req.params.id;
-  
   try {
     // Validate ObjectId format
     if (!ObjectId.isValid(id)) {
@@ -88,7 +89,7 @@ export const updatePlayer = async (req: Request, res: Response) => {
     }
 
     const query = { _id: new ObjectId(id) };
-    const { name, position, age, team_id } = req.body;
+    const { name, position, age, team_id, goals, assists, matchesPlayed } = req.body;
     const updateData: Partial<Player> = {};
     if (name) updateData.name = name;
     if (position) updateData.position = position;
@@ -102,6 +103,9 @@ export const updatePlayer = async (req: Request, res: Response) => {
         return res.status(403).send('Only coaches or admins can add players to teams');
       }
     }
+    if (typeof goals === 'number') updateData.goals = goals;
+    if (typeof assists === 'number') updateData.assists = assists;
+    if (typeof matchesPlayed === 'number') updateData.matchesPlayed = matchesPlayed;
 
     const result = await collections.players?.updateOne(query, { $set: updateData });
 
