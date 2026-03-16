@@ -1,0 +1,65 @@
+<div class="team-details-container">
+  <div class="header">
+    <h2>Team Details</h2>
+    <button class="btn-back" routerLink="/teams">← Back to Teams</button>
+  </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="loading" *ngIf="loading">Loading team details...</div>
+
+  <div class="team-info" *ngIf="team && !loading">
+    <h3>{{ team.name }}</h3>
+    <p><strong>Coach: </strong>
+      <span *ngIf="coachUsername || coachName">{{ coachUsername || coachName }}</span>
+      <span *ngIf="!coachUsername && !coachName && team.coach">User not found</span>
+      <span *ngIf="!team.coach">N/A</span>
+    </p>
+    <button *ngIf="authService.getRole() !== 'player'" class="btn-edit" [routerLink]="['/teams/edit', team._id]">Edit Team</button>
+  </div>
+
+  <div class="players-section" *ngIf="!loading">
+    <div class="section-header">
+      <h4>Players ({{ players.length }})</h4>
+      <button *ngIf="authService.getRole() !== 'player'" class="btn-add" [routerLink]="['/players/new']" [queryParams]="{ team_id: team?._id }">+ Add Player</button>
+    </div>
+    
+    <div class="players-list" *ngIf="players.length > 0">
+      <!-- Desktop Table View -->
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Age</th>
+            <th *ngIf="authService.getRole() !== 'player'">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let player of players">
+            <td>{{ player.name }}</td>
+            <td>{{ player.position }}</td>
+            <td>{{ player.age }}</td>
+            <td *ngIf="authService.getRole() !== 'player'">
+              <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mobile Card View -->
+      <div class="player-card" *ngFor="let player of players">
+        <h5>{{ player.name }}</h5>
+        <p><strong>Position:</strong> {{ player.position }}</p>
+        <p><strong>Age:</strong> {{ player.age }}</p>
+        <div class="actions" *ngIf="authService.getRole() !== 'player'">
+          <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-players" *ngIf="players.length === 0">
+      <p>No players assigned to this team.</p>
+      <button class="btn-add" [routerLink]="['/players/new']" [queryParams]="{ team_id: team?._id }">+ Add Player</button>
+    </div>
+  </div>
+</div>

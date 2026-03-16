@@ -1,0 +1,27 @@
+<div class="home-container">
+  <div class="hero">
+    <h1>Sports Management System</h1>
+    <p class="subtitle">Manage your teams, players, and matches all in one place</p>
+    
+    <div class="auth-status" *ngIf="authService.isLoggedIn(); else notLoggedIn">
+      <p class="welcome-message">Welcome back, {{ authService.getRole() || 'User' }}!</p>
+      <button class="btn btn-secondary" *ngIf="authService.currentUserValue?._id" [routerLink]="['/users/edit', authService.currentUserValue?.['_id']]">
+        Edit My Account
+      </button>
+    </div>
+    <ng-template #notLoggedIn>
+      <div class="auth-prompt">
+        <p>Please log in to access all features</p>
+        <button class="btn btn-primary" routerLink="/login">Login / Register</button>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="features" *ngIf="authService.isLoggedIn()">
+    <div class="feature-card" *ngFor="let feature of features" [routerLink]="feature.route">
+      <h3>{{ feature.title }}</h3>
+      <p>{{ feature.description }}</p>
+      <button class="btn btn-secondary">View {{ feature.title }}</button>
+    </div>
+  </div>
+</div>

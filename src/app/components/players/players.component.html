@@ -1,0 +1,52 @@
+<div class="players-container">
+  <div class="header">
+    <h2>Players</h2>
+    <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-add" routerLink="/players/new">+ Add Player</button>
+  </div>
+  
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="loading" *ngIf="loading">Loading players...</div>
+  
+  <div class="players-list" *ngIf="!loading">
+    <!-- Desktop Table View -->
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Age</th>
+          <th>Team</th>
+          <th *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of players">
+          <td>{{ player.name }}</td>
+          <td>{{ player.position }}</td>
+          <td>{{ player.age }}</td>
+          <td>{{ getTeamName(player.team_id) }}</td>
+          <td *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'">
+            <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+            <button class="btn-delete" (click)="deletePlayer(player._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Mobile Card View -->
+    <div class="player-card" *ngFor="let player of players">
+      <h3>{{ player.name }}</h3>
+      <p><strong>Position:</strong> {{ player.position }}</p>
+      <p><strong>Age:</strong> {{ player.age }}</p>
+      <p><strong>Team:</strong> {{ getTeamName(player.team_id) }}</p>
+      <div class="actions" *ngIf="authService.getRole() !== 'player'">
+        <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+        <button class="btn-delete" (click)="deletePlayer(player._id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-players" *ngIf="players.length === 0 && !loading">
+    <p>No players found.</p>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="teams-container">
+  <div class="header">
+    <h2>Teams</h2>
+    <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-add" routerLink="/teams/new">+ Add Team</button>
+  </div>
+  
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="loading" *ngIf="loading">Loading teams...</div>
+  
+  <div class="teams-list" *ngIf="!loading">
+    <!-- Desktop Table View -->
+    <table>
+      <thead>
+        <tr>
+          <th *ngIf="authService.getRole() === 'admin'">ID</th>
+          <th>Team Name</th>
+          <th>Coach</th>
+          <th>Players</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of teams">
+          <td *ngIf="authService.getRole() === 'admin'">{{ team._id }}</td>
+          <td>{{ team.name }}</td>
+          <td>
+            {{ team.coachUsername }}
+          </td>
+          <td>{{ team.players?.length || 0 }}</td>
+          <td>
+            <button class="btn-view" [routerLink]="['/teams', team._id]">View Details</button>
+            <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-edit" [routerLink]="['/teams/edit', team._id]">Edit</button>
+            <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-delete" (click)="deleteTeam(team._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Mobile Card View -->
+    <div class="team-card" *ngFor="let team of teams">
+      <h3>{{ team.name }}</h3>
+      <p *ngIf="authService.getRole() === 'admin'"><strong>ID:</strong> {{ team._id }}</p>
+      <p><strong>Coach:</strong> {{ team.coachUsername }}</p>
+      <p><strong>Players:</strong> {{ team.players?.length || 0 }}</p>
+      <div class="actions">
+        <button class="btn-view" [routerLink]="['/teams', team._id]">View</button>
+        <button *ngIf="authService.getRole() !== 'player'" class="btn-edit" [routerLink]="['/teams/edit', team._id]">Edit</button>
+        <button *ngIf="authService.getRole() !== 'player'" class="btn-delete" (click)="deleteTeam(team._id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-teams" *ngIf="teams.length === 0 && !loading">
+    <p>No teams found.</p>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Edit User' : 'Add New User' }}</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="error" *ngIf="error">{{ error }}</div>
+      
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username">
+          <mat-error *ngIf="userForm.get('username')?.hasError('required')">
+            Username is required
+          </mat-error>
+          <mat-error *ngIf="userForm.get('username')?.hasError('minlength')">
+            Username must be at least 3 characters
+          </mat-error>
+          <mat-error *ngIf="userForm.get('username')?.hasError('maxlength')">
+            Username cannot exceed 50 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email">
+          <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="userForm.get('email')?.hasError('email')">
+            Please enter a valid email
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password {{ isEditMode ? '(Leave blank to keep current)' : '' }}</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">
+            Password must be at least 6 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option *ngFor="let role of roles" [value]="role">
+              {{ role | titlecase }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="userForm.get('role')?.hasError('required')">
+            Role is required
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">
+            {{ isEditMode ? 'Update' : 'Create' }}
+          </button>
+          <button mat-raised-button type="button" (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

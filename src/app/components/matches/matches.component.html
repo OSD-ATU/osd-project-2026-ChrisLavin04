@@ -1,0 +1,51 @@
+<div class="matches-container">
+  <div class="header">
+    <h2>Matches</h2>
+    <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-add" routerLink="/matches/new">+ Add Match</button>
+  </div>
+  
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="loading" *ngIf="loading">Loading matches...</div>
+  
+  <div class="matches-list" *ngIf="!loading">
+    <!-- Desktop Table View -->
+    <table>
+      <thead>
+        <tr>
+          <th>Home Team</th>
+          <th>Away Team</th>
+          <th>Score</th>
+          <th>Date</th>
+          <th *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let match of matches">
+          <td>{{ getTeamName(match.home_team_id) }}</td>
+          <td>{{ getTeamName(match.away_team_id) }}</td>
+          <td>{{ getScoreDisplay(match) }}</td>
+          <td>{{ match.date | date:'shortDate' }}</td>
+          <td *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'">
+            <button class="btn-edit" [routerLink]="['/matches/edit', match._id]">Edit</button>
+            <button class="btn-delete" (click)="deleteMatch(match._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Mobile Card View -->
+    <div class="match-card" *ngFor="let match of matches">
+      <h3>{{ getTeamName(match.home_team_id) }} vs {{ getTeamName(match.away_team_id) }}</h3>
+      <p><strong>Score:</strong> {{ getScoreDisplay(match) }}</p>
+      <p><strong>Date:</strong> {{ match.date | date:'shortDate' }}</p>
+      <div class="actions" *ngIf="authService.getRole() !== 'player'">
+        <button class="btn-edit" [routerLink]="['/matches/edit', match._id]">Edit</button>
+        <button class="btn-delete" (click)="deleteMatch(match._id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-matches" *ngIf="matches.length === 0 && !loading">
+    <p>No matches found.</p>
+  </div>
+</div>

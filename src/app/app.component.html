@@ -1,0 +1,67 @@
+﻿<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/">{{ title }}</a>
+    </div>
+    <ul class="nav-menu">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+      
+      <!-- Show these links only when logged in -->
+      <ng-container *ngIf="authService.isLoggedIn()">
+        <!-- Admin: can create teams, matches, and view players -->
+        <li *ngIf="authService.getRole() === 'admin'">
+          <a routerLink="/teams" routerLinkActive="active">Teams</a>
+        </li>
+        <li *ngIf="authService.getRole() === 'admin'">
+          <a routerLink="/players" routerLinkActive="active">Players</a>
+        </li>
+        <li *ngIf="authService.getRole() === 'admin'">
+          <a routerLink="/matches" routerLinkActive="active">Matches</a>
+        </li>
+        <!-- Coach: can create players and add to teams -->
+        <li *ngIf="authService.getRole() === 'coach'">
+          <a routerLink="/players" routerLinkActive="active">Players</a>
+        </li>
+        <li *ngIf="authService.getRole() === 'coach'">
+          <a routerLink="/teams" routerLinkActive="active">Teams</a>
+        </li>
+        <li *ngIf="authService.getRole() === 'coach'">
+          <a routerLink="/matches" routerLinkActive="active">Matches</a>
+        </li>
+        <!-- Player: can only view -->
+        <li *ngIf="authService.getRole() === 'player'">
+          <a routerLink="/teams" routerLinkActive="active">Teams</a>
+        </li>
+        <li *ngIf="authService.getRole() === 'player'">
+          <a routerLink="/players" routerLinkActive="active">Players</a>
+        </li>
+        <li *ngIf="authService.getRole() === 'player'">
+          <a routerLink="/matches" routerLinkActive="active">Matches</a>
+        </li>
+        <!-- Admin: can view users -->
+        <li *ngIf="authService.getRole() === 'admin'">
+          <a routerLink="/users" routerLinkActive="active">Users</a>
+        </li>
+      </ng-container>
+      
+      <!-- Show login when not logged in -->
+      <li *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      </li>
+      
+      <!-- Show user info and logout when logged in -->
+      <li *ngIf="authService.isLoggedIn()" class="user-info">
+        <span class="user-name">{{ (authService.currentUser$ | async)?.name }}</span>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2025 Sports Management System. Built with Angular.</p>
+</footer>

@@ -1,0 +1,107 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Edit Player' : 'Add New Player' }}</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="error" *ngIf="error">{{ error }}</div>
+      
+      <form [formGroup]="playerForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Player Name</mat-label>
+          <input matInput formControlName="name">
+          <mat-error *ngIf="playerForm.get('name')?.hasError('required')">
+            Name is required
+          </mat-error>
+          <mat-error *ngIf="playerForm.get('name')?.hasError('minlength')">
+            Name must be at least 2 characters
+          </mat-error>
+          <mat-error *ngIf="playerForm.get('name')?.hasError('maxlength')">
+            Name cannot exceed 100 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Position</mat-label>
+          <mat-select formControlName="position">
+            <mat-option *ngFor="let pos of positions" [value]="pos">
+              {{ pos }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="playerForm.get('position')?.hasError('required')">
+            Position is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Age</mat-label>
+          <input matInput type="number" formControlName="age">
+          <mat-error *ngIf="playerForm.get('age')?.hasError('required')">
+            Age is required
+          </mat-error>
+          <mat-error *ngIf="playerForm.get('age')?.hasError('min')">
+            Player must be at least 16 years old
+          </mat-error>
+          <mat-error *ngIf="playerForm.get('age')?.hasError('max')">
+            Player cannot be older than 45 years
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Team</mat-label>
+          <mat-select formControlName="team_id">
+            <mat-option *ngFor="let team of teams" [value]="team._id">
+              {{ team.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="playerForm.get('team_id')?.hasError('required')">
+            Team is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Goals</mat-label>
+          <input matInput type="number" formControlName="goals" min="0">
+          <mat-error *ngIf="playerForm.get('goals')?.hasError('required')">
+            Goals is required
+          </mat-error>
+          <mat-error *ngIf="playerForm.get('goals')?.hasError('min')">
+            Goals cannot be negative
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Assists</mat-label>
+          <input matInput type="number" formControlName="assists" min="0">
+          <mat-error *ngIf="playerForm.get('assists')?.hasError('required')">
+            Assists is required
+          </mat-error>
+          <mat-error *ngIf="playerForm.get('assists')?.hasError('min')">
+            Assists cannot be negative
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Matches Played</mat-label>
+          <input matInput type="number" formControlName="matchesPlayed" min="0">
+          <mat-error *ngIf="playerForm.get('matchesPlayed')?.hasError('required')">
+            Matches Played is required
+          </mat-error>
+          <mat-error *ngIf="playerForm.get('matchesPlayed')?.hasError('min')">
+            Matches Played cannot be negative
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!playerForm.valid">
+            {{ isEditMode ? 'Update' : 'Create' }}
+          </button>
+          <button mat-raised-button type="button" (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
