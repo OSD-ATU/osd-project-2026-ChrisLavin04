@@ -1,0 +1,17 @@
+<div class="stats-container">
+  <div class="back-btn-container">
+    <button class="btn-back" routerLink="/players">Back to Players</button>
+  </div>
+  <ng-container *ngIf="player; else errorTpl">
+    <h2>{{ player.name }} - Player Statistics</h2>
+      <p><strong>Position:</strong> {{ player.position }}</p>
+      <p><strong>Age:</strong> {{ player.age }}</p>
+      <p><strong>Team:</strong> {{ getTeamName(player.team_id) }}</p>
+      <p><strong>Goals:</strong> {{ player.goals ?? 0 }}</p>
+      <p><strong>Assists:</strong> {{ player.assists ?? 0 }}</p>
+      <p><strong>Matches Played:</strong> {{ player.matchesPlayed ?? 0 }}</p>
+  </ng-container>
+  <ng-template #errorTpl>
+    <div class="error">{{ error }}</div>
+  </ng-template>
+</div>

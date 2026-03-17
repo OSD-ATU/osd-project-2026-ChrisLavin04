@@ -1,0 +1,32 @@
+.back-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.btn-back {
+  background: #6c757d;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+  background: #5a6268;
+}
+.stats-container {
+  max-width: 700px;
+  margin: 2rem auto;
+}
+.stats-card p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+.error {
+  color: #d32f2f;
+  font-weight: bold;
+}

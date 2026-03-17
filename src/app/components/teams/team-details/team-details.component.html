@@ -39,9 +39,10 @@
             <td>{{ player.name }}</td>
             <td>{{ player.position }}</td>
             <td>{{ player.age }}</td>
-            <td *ngIf="authService.getRole() !== 'player'">
-              <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
-            </td>
+              <td *ngIf="authService.getRole() !== 'player'">
+                <button class="btn-details" [routerLink]="['/players/details', player._id]">View Details</button>
+                <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+              </td>
           </tr>
         </tbody>
       </table>
@@ -51,9 +52,10 @@
         <h5>{{ player.name }}</h5>
         <p><strong>Position:</strong> {{ player.position }}</p>
         <p><strong>Age:</strong> {{ player.age }}</p>
-        <div class="actions" *ngIf="authService.getRole() !== 'player'">
-          <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
-        </div>
+          <div class="actions" *ngIf="authService.getRole() !== 'player'">
+            <button class="btn-details" [routerLink]="['/players/details', player._id]">View Details</button>
+            <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+          </div>
       </div>
     </div>
 
