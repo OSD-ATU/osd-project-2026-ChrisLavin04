@@ -16,7 +16,7 @@
           <th>Position</th>
           <th>Age</th>
           <th>Team</th>
-          <th *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'">Actions</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -25,10 +25,10 @@
           <td>{{ player.position }}</td>
           <td>{{ player.age }}</td>
           <td>{{ getTeamName(player.team_id) }}</td>
-            <td *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'">
+            <td>
               <button class="btn-details" [routerLink]="['/players/details', player._id]">View Stats</button>
-              <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
-              <button class="btn-delete" (click)="deletePlayer(player._id)">Delete</button>
+              <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+              <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-delete" (click)="deletePlayer(player._id)">Delete</button>
             </td>
         </tr>
       </tbody>
@@ -39,11 +39,11 @@
       <h3>{{ player.name }}</h3>
       <p><strong>Position:</strong> {{ player.position }}</p>
       <p><strong>Age:</strong> {{ player.age }}</p>
-      <button class="btn-details" [routerLink]="['/players/details', player._id]">View Details</button>
       <p><strong>Team:</strong> {{ getTeamName(player.team_id) }}</p>
-      <div class="actions" *ngIf="authService.getRole() !== 'player'">
-        <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
-        <button class="btn-delete" (click)="deletePlayer(player._id)">Delete</button>
+      <div class="actions">
+        <button class="btn-details" [routerLink]="['/players/details', player._id]">View Stats</button>
+        <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+        <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-delete" (click)="deletePlayer(player._id)">Delete</button>
       </div>
     </div>
   </div>

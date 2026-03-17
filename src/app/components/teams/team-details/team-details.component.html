@@ -31,7 +31,7 @@
             <th>Name</th>
             <th>Position</th>
             <th>Age</th>
-            <th *ngIf="authService.getRole() !== 'player'">Actions</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -39,10 +39,10 @@
             <td>{{ player.name }}</td>
             <td>{{ player.position }}</td>
             <td>{{ player.age }}</td>
-              <td *ngIf="authService.getRole() !== 'player'">
-                <button class="btn-details" [routerLink]="['/players/details', player._id]">View Stats</button>
-                <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
-              </td>
+              <td>
+                  <button class="btn-details" [routerLink]="['/players/details', player._id]">View Stats</button>
+                  <button *ngIf="authService.getRole() !== 'player'" class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+                </td>
           </tr>
         </tbody>
       </table>
@@ -52,9 +52,9 @@
         <h5>{{ player.name }}</h5>
         <p><strong>Position:</strong> {{ player.position }}</p>
         <p><strong>Age:</strong> {{ player.age }}</p>
-          <div class="actions" *ngIf="authService.getRole() !== 'player'">
-            <button class="btn-details" [routerLink]="['/players/details', player._id]">View Details</button>
-            <button class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
+          <div class="actions">
+            <button class="btn-details" [routerLink]="['/players/details', player._id]">View Stats</button>
+            <button *ngIf="authService.getRole() !== 'player'" class="btn-edit" [routerLink]="['/players/edit', player._id]">Edit</button>
           </div>
       </div>
     </div>
