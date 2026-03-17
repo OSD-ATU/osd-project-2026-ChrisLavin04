@@ -51,7 +51,7 @@
       
       <!-- Show user info and logout when logged in -->
       <li *ngIf="authService.isLoggedIn()" class="user-info">
-        <span class="user-name">{{ (authService.currentUser$ | async)?.name }}</span>
+        <a class="user-name" routerLink="/profile">{{ (authService.currentUser$ | async)?.username }}</a>
         <button class="logout-btn" (click)="logout()">Logout</button>
       </li>
     </ul>

@@ -13,6 +13,7 @@ import { PlayerStatsComponent } from './components/player-stats/player-stats.com
 import { StandingsComponent } from './components/standings/standings.component';
 import { LoginComponent } from './components/login/login.component';
 import { authGuard } from './guards/auth.guard';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -39,6 +40,7 @@ export const routes: Routes = [
   { path: 'users/new', component: UserFormComponent, canActivate: [authGuard] },
   { path: 'users/edit/:id', component: UserFormComponent, canActivate: [authGuard] },
   
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' }
 ];
 

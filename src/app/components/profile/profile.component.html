@@ -1,0 +1,10 @@
+<div class="profile-container" *ngIf="user">
+  <h2>My Profile</h2>
+  <div class="profile-info">
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Role:</strong> {{ user.role }}</p>
+  </div>
+  <button class="btn-edit" (click)="goToEditProfile()">Edit Profile</button>
+</div>
+<div *ngIf="!user" class="loading">Loading profile...</div>

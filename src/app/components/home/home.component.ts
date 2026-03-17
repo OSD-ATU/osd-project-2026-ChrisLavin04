@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
 //HomeComponent: Displays the main navigation features for the sports management app.
 export class HomeComponent {
     get userName(): string | null {
-      return this.authService.currentUserValue?.name || null;
+      return this.authService.currentUserValue?.username || null;
     }
   constructor(public authService: AuthService) {}
 

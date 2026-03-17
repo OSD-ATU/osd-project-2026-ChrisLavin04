@@ -10,38 +10,40 @@
   <div *ngIf="!loading && !error">
     <div *ngIf="standings.length === 0" class="empty">No match data available yet.</div>
 
-    <table *ngIf="standings.length > 0" class="standings-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Team</th>
-          <th title="Played">Played</th>
-          <th title="Won">Wins</th>
-          <th title="Drawn">Draws</th>
-          <th title="Lost">Losses</th>
-          <th title="Goals For">Goals For</th>
-          <th title="Goals Against">Goals Against</th>
-          <th title="Goal Difference">Goal Difference</th>
-          <th title="Points">Points</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of standings; let i = index" [class.top-three]="i < 3">
-          <td>{{ i + 1 }}</td>
-          <td class="team-name">{{ row.teamName }}</td>
-          <td>{{ row.played }}</td>
-          <td>{{ row.won }}</td>
-          <td>{{ row.drawn }}</td>
-          <td>{{ row.lost }}</td>
-          <td>{{ row.goalsFor }}</td>
-          <td>{{ row.goalsAgainst }}</td>
-          <td [class.positive]="row.goalDifference > 0" [class.negative]="row.goalDifference < 0">
-            {{ row.goalDifference > 0 ? '+' : '' }}{{ row.goalDifference }}
-          </td>
-          <td class="points">{{ row.points }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="standings-table-wrapper">
+      <table *ngIf="standings.length > 0" class="standings-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th title="Played">Played</th>
+            <th title="Won">Wins</th>
+            <th title="Drawn">Draws</th>
+            <th title="Lost">Losses</th>
+            <th title="Goals For">Goals For</th>
+            <th title="Goals Against">Goals Against</th>
+            <th title="Goal Difference">Goal Difference</th>
+            <th title="Points">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of standings; let i = index" [class.top-three]="i < 3">
+            <td data-label="#">{{ i + 1 }}</td>
+            <td class="team-name" data-label="Team">{{ row.teamName }}</td>
+            <td data-label="Played">{{ row.played }}</td>
+            <td data-label="Wins">{{ row.won }}</td>
+            <td data-label="Draws">{{ row.drawn }}</td>
+            <td data-label="Losses">{{ row.lost }}</td>
+            <td data-label="Goals For">{{ row.goalsFor }}</td>
+            <td data-label="Goals Against">{{ row.goalsAgainst }}</td>
+            <td data-label="Goal Difference" [class.positive]="row.goalDifference > 0" [class.negative]="row.goalDifference < 0">
+              {{ row.goalDifference > 0 ? '+' : '' }}{{ row.goalDifference }}
+            </td>
+            <td class="points" data-label="Points">{{ row.points }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p class="legend">Points: Win = 3 &nbsp;|&nbsp; Draw = 1 &nbsp;|&nbsp; Loss = 0</p>
   </div>
 </div>

@@ -21,7 +21,15 @@ h2 {
   color: #c0392b;
 }
 
+.standings-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
 .standings-table {
+  min-width: 600px;
   width: 100%;
   border-collapse: collapse;
   background: #fff;
@@ -110,10 +118,45 @@ h2 {
 }
 
 @media (max-width: 600px) {
+  .standings-table {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 800px) {
+  .standings-container {
+    padding: 0 0.2rem;
+  }
+  .standings-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .legend {
+    text-align: left;
+    font-size: 0.8rem;
+  }
+  .standings-table {
+    display: table;
+    min-width: 600px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: #fff;
+  }
+  .standings-table thead {
+    display: table-header-group;
+  }
+  .standings-table tr {
+    display: table-row;
+  }
   .standings-table th,
   .standings-table td {
+    display: table-cell;
     padding: 0.5rem 0.4rem;
     font-size: 0.8rem;
+    text-align: center;
+    width: auto;
   }
 }
 
