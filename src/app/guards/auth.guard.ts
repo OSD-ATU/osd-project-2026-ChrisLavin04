@@ -19,11 +19,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   const role = authService.getRole();
   const url = state.url;
 
-  // Everyone can view teams, players, matches
+  // Everyone can view teams, players, matches, standings
   if (
     url.startsWith('/teams') ||
     url.startsWith('/players') ||
-    url.startsWith('/matches')
+    url.startsWith('/matches') ||
+    url.startsWith('/standings')
   ) {
     // Restrict create/edit actions based on role
     if (url.includes('/new') || url.includes('/edit')) {

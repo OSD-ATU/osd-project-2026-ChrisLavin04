@@ -10,6 +10,7 @@ import { MatchFormComponent } from './components/match-form/match-form.component
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { TeamDetailsComponent } from './components/teams/team-details/team-details.component';
 import { PlayerStatsComponent } from './components/player-stats/player-stats.component';
+import { StandingsComponent } from './components/standings/standings.component';
 import { LoginComponent } from './components/login/login.component';
 import { authGuard } from './guards/auth.guard';
 
@@ -28,6 +29,8 @@ export const routes: Routes = [
   { path: 'players/edit/:id', component: PlayerFormComponent, canActivate: [authGuard] },
   { path: 'players/details/:id', component: PlayerStatsComponent, canActivate: [authGuard] },
   
+  { path: 'standings', component: StandingsComponent, canActivate: [authGuard] },
+
   { path: 'matches', component: MatchesComponent, canActivate: [authGuard] },
   { path: 'matches/new', component: MatchFormComponent, canActivate: [authGuard] },
   { path: 'matches/edit/:id', component: MatchFormComponent, canActivate: [authGuard] },

@@ -1,7 +1,10 @@
 <div class="matches-container">
   <div class="header">
     <h2>Matches</h2>
-    <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-add" routerLink="/matches/new">+ Add Match</button>
+    <div class="header-actions">
+      <button class="btn-standings" routerLink="/standings">View Standings</button>
+      <button *ngIf="authService.getRole() !== 'player' || authService.getRole() === 'admin'" class="btn-add" routerLink="/matches/new">+ Add Match</button>
+    </div>
   </div>
   
   <div class="error" *ngIf="error">{{ error }}</div>
