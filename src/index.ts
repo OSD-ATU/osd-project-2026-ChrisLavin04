@@ -12,9 +12,12 @@ const PORT = process.env.PORT || 3000;
 export const app: Application = express();
 
 // Middleware
-// Main entry point for the Express app
+// Entry points for the Express app
 app.use(cors({
-    origin: 'http://localhost:4200', // Angular development server
+    origin: [
+        'http://localhost:4200', // Angular development server
+        'http://sports-management-system.s3-website-eu-west-1.amazonaws.com' // S3 bucket frontend
+    ],
     credentials: true
 }));
 app.use(express.json());
