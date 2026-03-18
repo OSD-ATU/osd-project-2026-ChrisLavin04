@@ -6,5 +6,24 @@
     <p><strong>Role:</strong> {{ user.role }}</p>
   </div>
   <button class="btn-edit" (click)="goToEditProfile()">Edit Profile</button>
+  <div *ngIf="coachedTeams.length > 0" class="coached-teams">
+    <h3>Teams You Coach</h3>
+    <table class="coached-teams-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of coachedTeams">
+          <td>{{ team.name }}</td>
+          <td>
+            <button class="btn-details" [routerLink]="['/teams', team._id]">View Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div *ngIf="!user" class="loading">Loading profile...</div>
