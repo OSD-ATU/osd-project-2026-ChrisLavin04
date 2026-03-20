@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamService } from '../../services/team.service';
 import { MatchService } from '../../services/match.service';
+import { LambdaStandingsService } from '../../services/lambda-standings.service';
 import { Team } from '../../models/team.model';
 import { Match } from '../../models/match.model';
 import { forkJoin } from 'rxjs';
@@ -34,7 +35,8 @@ export class StandingsComponent implements OnInit {
 
   constructor(
     private teamService: TeamService,
-    private matchService: MatchService
+    private matchService: MatchService,
+    private lambdaStandings: LambdaStandingsService
   ) {}
 
   ngOnInit(): void {
@@ -43,17 +45,27 @@ export class StandingsComponent implements OnInit {
       matches: this.matchService.getMatches()
     }).subscribe({
       next: ({ teams, matches }) => {
-        this.standings = this.calculateStandings(teams, matches);
-        this.loading = false;
+        this.lambdaStandings.getUniqueStandings(teams, matches).subscribe({
+          next: (result) => {
+            this.standings = result.standings;
+            this.loading = false;
+          },
+          error: () => {
+            this.error = 'Failed to load standings from Lambda.';
+            this.loading = false;
+          }
+        });
       },
       error: () => {
-        this.error = 'Failed to load standings.';
+        this.error = 'Failed to load teams or matches.';
         this.loading = false;
       }
     });
   }
 
-  private calculateStandings(teams: Team[], matches: Match[]): StandingRow[] {
+  // The local calculateStandings method is now replaced by Lambda. Here is the old code.
+  /*
+    private calculateStandings(teams: Team[], matches: Match[]): StandingRow[] {
     const map = new Map<string, StandingRow>();
 
     for (const team of teams) {
@@ -100,5 +112,5 @@ export class StandingsComponent implements OnInit {
     return Array.from(map.values())
       .map(row => ({ ...row, goalDifference: row.goalsFor - row.goalsAgainst }))
       .sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor);
-  }
+  }*/
 }
