@@ -6,6 +6,6 @@ RUN npm install
 COPY . .
 RUN npm run build -- --configuration production
 
-# Stage 2: Serve with Nginx
 FROM nginx:alpine
+RUN rm -rf /usr/share/nginx/html/*
 COPY --from=build /app/dist/frontend2025 /usr/share/nginx/html
