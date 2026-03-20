@@ -15,6 +15,8 @@ export const app: Application = express();
 // Entry points for the Express app
 app.use(cors({
     origin: [
+        '*', // Allow all origins
+        'http://localhost:8080', // Docker port
         'http://localhost:4200', // Angular development server
         'http://sports-management-system.s3-website-eu-west-1.amazonaws.com' // S3 bucket frontend
     ],
