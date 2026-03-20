@@ -16,3 +16,4 @@ RUN npm run build -- --configuration production
 FROM nginx:alpine
 # line 18 copy the built application to the nginx root dir at /html
 COPY --from=build /app/dist/frontend2025/browser /usr/share/nginx/html
+RUN ls -l /usr/share/nginx/html
