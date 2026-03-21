@@ -3,59 +3,65 @@
     <div class="nav-brand">
       <a routerLink="/">{{ title }}</a>
     </div>
-    <button class="dark-toggle" (click)="toggleDarkMode()">
-      {{ darkMode ? 'Light Mode' : 'Dark Mode' }}
-    </button>
-    <ul class="nav-menu">
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+    <div class="nav-actions">
+      <button class="dark-toggle" (click)="toggleDarkMode()">
+        {{ darkModeService.darkMode() ? 'Light Mode' : 'Dark Mode' }}
+      </button>
+      <!-- Hamburger menu button for mobile -->
+      <button class="hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
+        <span [class.open]="navbarService.menuOpen()">&#9776;</span>
+      </button>
+    </div>
+    <ul class="nav-menu" [class.open]="navbarService.menuOpen()">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">Home</a></li>
       
       <!-- Show these links only when logged in -->
       <ng-container *ngIf="authService.isLoggedIn()">
         <!-- Admin: can create teams, matches, and view players -->
         <li *ngIf="authService.getRole() === 'admin'">
-          <a routerLink="/teams" routerLinkActive="active">Teams</a>
+          <a routerLink="/teams" routerLinkActive="active" (click)="closeMenu()">Teams</a>
         </li>
         <li *ngIf="authService.getRole() === 'admin'">
-          <a routerLink="/players" routerLinkActive="active">Players</a>
+          <a routerLink="/players" routerLinkActive="active" (click)="closeMenu()">Players</a>
         </li>
         <li *ngIf="authService.getRole() === 'admin'">
-          <a routerLink="/matches" routerLinkActive="active">Matches</a>
+          <a routerLink="/matches" routerLinkActive="active" (click)="closeMenu()">Matches</a>
         </li>
         <!-- Coach: can create players and add to teams -->
         <li *ngIf="authService.getRole() === 'coach'">
-          <a routerLink="/players" routerLinkActive="active">Players</a>
+          <a routerLink="/players" routerLinkActive="active" (click)="closeMenu()">Players</a>
         </li>
         <li *ngIf="authService.getRole() === 'coach'">
-          <a routerLink="/teams" routerLinkActive="active">Teams</a>
+          <a routerLink="/teams" routerLinkActive="active" (click)="closeMenu()">Teams</a>
         </li>
         <li *ngIf="authService.getRole() === 'coach'">
-          <a routerLink="/matches" routerLinkActive="active">Matches</a>
+          <a routerLink="/matches" routerLinkActive="active" (click)="closeMenu()">Matches</a>
         </li>
         <!-- Player: can only view -->
         <li *ngIf="authService.getRole() === 'player'">
-          <a routerLink="/teams" routerLinkActive="active">Teams</a>
+          <a routerLink="/teams" routerLinkActive="active" (click)="closeMenu()">Teams</a>
         </li>
         <li *ngIf="authService.getRole() === 'player'">
-          <a routerLink="/players" routerLinkActive="active">Players</a>
+          <a routerLink="/players" routerLinkActive="active" (click)="closeMenu()">Players</a>
         </li>
         <li *ngIf="authService.getRole() === 'player'">
-          <a routerLink="/matches" routerLinkActive="active">Matches</a>
+          <a routerLink="/matches" routerLinkActive="active" (click)="closeMenu()">Matches</a>
         </li>
         <!-- Admin: can view users -->
         <li *ngIf="authService.getRole() === 'admin'">
-          <a routerLink="/users" routerLinkActive="active">Users</a>
+          <a routerLink="/users" routerLinkActive="active" (click)="closeMenu()">Users</a>
         </li>
       </ng-container>
       
       <!-- Show login when not logged in -->
       <li *ngIf="!authService.isLoggedIn()">
-        <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a>
       </li>
       
       <!-- Show user info and logout when logged in -->
       <li *ngIf="authService.isLoggedIn()" class="user-info">
-        <a class="user-name" routerLink="/profile">{{ (authService.currentUser$ | async)?.username }}</a>
-        <button class="logout-btn" (click)="logout()">Logout</button>
+        <a class="user-name" routerLink="/profile" (click)="closeMenu()">{{ (authService.currentUser$ | async)?.username }}</a>
+        <button class="logout-btn" (click)="logout(); closeMenu()">Logout</button>
       </li>
     </ul>
   </div>

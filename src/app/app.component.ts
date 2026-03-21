@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
+import { DarkModeService } from './services/dark-mode.service';
+import { NavbarService } from './services/navbar.service';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +16,19 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   title = 'Sports Management System';
-  darkMode = false;
 
-  constructor(public authService: AuthService, private router: Router) {
-    // Optionally, load dark mode preference from localStorage
-    const saved = localStorage.getItem('darkMode');
-    this.darkMode = saved === 'true';
-    this.updateDarkModeClass();
+  constructor(
+    public authService: AuthService,
+    public darkModeService: DarkModeService,
+    public navbarService: NavbarService,
+    private router: Router
+  ) {}
+  toggleMenu() {
+    this.navbarService.toggleMenu();
+  }
+
+  closeMenu() {
+    this.navbarService.closeMenu();
   }
 
   ngOnInit() {
@@ -35,18 +43,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  toggleDarkMode() {
-    this.darkMode = !this.darkMode;
-    localStorage.setItem('darkMode', String(this.darkMode));
-    this.updateDarkModeClass();
-  }
 
-  updateDarkModeClass() {
-    if (this.darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
+  toggleDarkMode() {
+    this.darkModeService.toggle();
   }
 
   logout(): void {
