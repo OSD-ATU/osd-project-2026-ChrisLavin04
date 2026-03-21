@@ -1,3 +1,4 @@
+import { DarkModeService } from '../../services/dark-mode.service';
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -27,6 +28,7 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+    isDarkMode: (() => boolean) | null = null;
   loginForm: FormGroup;
   registerForm: FormGroup;
   loginError: string | null = null;
@@ -38,8 +40,10 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private darkModeService: DarkModeService
   ) {
+      this.isDarkMode = this.darkModeService.darkMode ? () => this.darkModeService.darkMode() : null;
     // Get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
