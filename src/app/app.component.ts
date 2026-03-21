@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+// Declare global gtag function for Google Analytics
+declare function gtag(type: string, eventName: string, params?: any): void;
+
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 
@@ -9,15 +12,27 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Sports Management System';
   darkMode = false;
 
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, private router: Router) {
     // Optionally, load dark mode preference from localStorage
     const saved = localStorage.getItem('darkMode');
     this.darkMode = saved === 'true';
     this.updateDarkModeClass();
+  }
+
+  ngOnInit() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (typeof gtag === 'function') {
+          gtag('event', 'page_view', {
+            page_path: event.urlAfterRedirects
+          });
+        }
+      }
+    });
   }
 
   toggleDarkMode() {
