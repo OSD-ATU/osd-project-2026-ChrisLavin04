@@ -6,7 +6,12 @@
   
   <div class="error" *ngIf="error">{{ error }}</div>
   <div class="loading" *ngIf="loading">Loading teams...</div>
-  
+
+  <!-- Simple Search Box -->
+  <div class="search-box" *ngIf="!loading">
+    <input type="text" placeholder="Search teams by name..." [(ngModel)]="searchTerm" (input)="applySearch()" />
+  </div>
+
   <div class="teams-list" *ngIf="!loading">
     <!-- Desktop Table View -->
     <table>
@@ -20,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let team of teams">
+        <tr *ngFor="let team of filteredTeams">
           <td *ngIf="authService.getRole() === 'admin'">{{ team._id }}</td>
           <td>{{ team.name }}</td>
           <td>
@@ -37,7 +42,7 @@
     </table>
 
     <!-- Mobile Card View -->
-    <div class="team-card" *ngFor="let team of teams">
+    <div class="team-card" *ngFor="let team of filteredTeams">
       <h3>{{ team.name }}</h3>
       <p *ngIf="authService.getRole() === 'admin'"><strong>ID:</strong> {{ team._id }}</p>
       <p><strong>Coach:</strong> {{ team.coachUsername }}</p>

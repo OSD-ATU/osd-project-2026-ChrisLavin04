@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Team } from '../../models/team.model';
@@ -17,7 +18,7 @@ import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-teams',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './teams.component.html',
   styleUrl: './teams.component.css'
 })
@@ -26,6 +27,10 @@ import { forkJoin } from 'rxjs';
 export class TeamsComponent implements OnInit {
   //List of teams to display
   teams: TeamWithCoachName[] = [];
+  //Filtered teams for search
+  filteredTeams: TeamWithCoachName[] = [];
+  //Search term
+  searchTerm: string = '';
   //Loading state for UI feedback
   loading = false;
   //Error message to display if something goes wrong
@@ -62,6 +67,7 @@ export class TeamsComponent implements OnInit {
               ...team,
               players: players.filter(p => p.team_id === team._id).map(p => p._id || '')
             }));
+            this.applySearch();
             this.loading = false;
           },
           error: (err) => {
@@ -77,6 +83,17 @@ export class TeamsComponent implements OnInit {
         console.error('Error loading teams:', err);
       }
     });
+  }
+
+  applySearch() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.filteredTeams = this.teams;
+    } else {
+      this.filteredTeams = this.teams.filter(team =>
+        team.name.toLowerCase().includes(term)
+      );
+    }
   }
 
   //Deletes a team after confirmation dialog.
