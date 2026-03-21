@@ -41,6 +41,8 @@ export const routes: Routes = [
   { path: 'users/edit/:id', component: UserFormComponent, canActivate: [authGuard] },
   
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  // Public weather page (external API demo)
+  { path: 'weather', loadComponent: () => import('./components/weather/weather.component').then(m => m.WeatherComponent) },
   { path: '**', redirectTo: '' }
 ];
 

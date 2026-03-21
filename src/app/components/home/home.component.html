@@ -17,6 +17,10 @@
     </ng-template>
   </div>
 
+  <div class="weather-btn-container" *ngIf="authService.isLoggedIn()">
+    <p class="weather-btn-desc">Curious about the weather for your matches? Check recent and upcoming weather conditions for Dublin.</p>
+    <button class="btn btn-primary" routerLink="/weather">Check the Weather</button>
+  </div>
   <div class="features" *ngIf="authService.isLoggedIn()">
     <div class="feature-card" *ngFor="let feature of features" [routerLink]="feature.route">
       <h3>{{ feature.title }}</h3>

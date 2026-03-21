@@ -1,0 +1,28 @@
+<div class="weather-container">
+  <h2>Weather</h2>
+  <p class="weather-desc">Sometimes weather can be a big factor in how a match plays out. 
+    Check this table to track recent and upcoming weather logs of Ireland (Let's assume all matches are played in Dublin).</p>
+  <div *ngIf="loading">Loading weather...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div class="weather-table-wrapper" *ngIf="!loading && !error">
+    <table class="weather-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Max Temp (°C)</th>
+            <th>Weather Code</th>
+            <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let day of weather; let i = index">
+          <td>{{ getDateLabel(day.date) }}</td>
+          <td>{{ day.temp }}</td>
+          <td>{{ day.code }}</td>
+          <td>{{ day.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="weather-source">Weather data provided by External Weather API <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></p>
+</div>
