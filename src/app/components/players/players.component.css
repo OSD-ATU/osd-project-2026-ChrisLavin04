@@ -1,3 +1,35 @@
+.search-box {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.search-box input[type="text"] {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 250px;
+  max-width: 100%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+@media (max-width: 600px) {
+  .search-box {
+    width: 100%;
+  }
+  .search-box input[type="text"] {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.search-box input[type="text"]:focus {
+  border-color: #9c27b0;
+  box-shadow: 0 2px 8px rgba(156,39,176,0.08);
+}
 /* Details button styled like team details */
 .btn-details {
   background: #9c27b0;

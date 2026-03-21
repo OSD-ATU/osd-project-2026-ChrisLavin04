@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Player } from '../../models/player.model';
@@ -12,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-players',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './players.component.html',
   styleUrl: './players.component.css'
 })
@@ -20,6 +21,10 @@ import { AuthService } from '../../services/auth.service';
 export class PlayersComponent implements OnInit {
   //List of players to display
   players: Player[] = [];
+  //Filtered players for search
+  filteredPlayers: Player[] = [];
+  //Search term
+  searchTerm: string = '';
   //Map of team IDs to names
   teamNames: Record<string, string> = {};
   //Loading state for UI feedback
@@ -64,6 +69,7 @@ export class PlayersComponent implements OnInit {
     this.playerService.getPlayers().subscribe({
       next: (data) => {
         this.players = data;
+        this.applySearch();
         this.loading = false;
       },
       error: (err) => {
@@ -72,6 +78,17 @@ export class PlayersComponent implements OnInit {
         console.error('Error loading players:', err);
       }
     });
+  }
+
+  applySearch() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.filteredPlayers = this.players;
+    } else {
+      this.filteredPlayers = this.players.filter(player =>
+        player.name.toLowerCase().includes(term)
+      );
+    }
   }
 
   //Deletes a player after confirmation dialog.
