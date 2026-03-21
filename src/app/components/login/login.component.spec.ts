@@ -7,8 +7,13 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
+    const { RouterTestingModule } = await import('@angular/router/testing');
+    const { HttpClientTestingModule } = await import('@angular/common/http/testing');
     await TestBed.configureTestingModule({
-      imports: [LoginComponent]
+      imports: [LoginComponent, RouterTestingModule, HttpClientTestingModule],
+      providers: [
+        { provide: 'ActivatedRoute', useValue: {} }
+      ]
     })
     .compileComponents();
 

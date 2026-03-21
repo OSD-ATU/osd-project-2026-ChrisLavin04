@@ -7,8 +7,13 @@ describe('MatchFormComponent', () => {
   let fixture: ComponentFixture<MatchFormComponent>;
 
   beforeEach(async () => {
+    const { HttpClientTestingModule } = await import('@angular/common/http/testing');
+    const { RouterTestingModule } = await import('@angular/router/testing');
     await TestBed.configureTestingModule({
-      imports: [MatchFormComponent]
+      imports: [MatchFormComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [
+        { provide: 'ActivatedRoute', useValue: {} }
+      ]
     })
     .compileComponents();
 

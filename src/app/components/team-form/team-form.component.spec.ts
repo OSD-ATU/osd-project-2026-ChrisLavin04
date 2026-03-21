@@ -7,8 +7,13 @@ describe('TeamFormComponent', () => {
   let fixture: ComponentFixture<TeamFormComponent>;
 
   beforeEach(async () => {
+    const { HttpClientTestingModule } = await import('@angular/common/http/testing');
+    const { RouterTestingModule } = await import('@angular/router/testing');
     await TestBed.configureTestingModule({
-      imports: [TeamFormComponent]
+      imports: [TeamFormComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [
+        { provide: 'ActivatedRoute', useValue: {} }
+      ]
     })
     .compileComponents();
 

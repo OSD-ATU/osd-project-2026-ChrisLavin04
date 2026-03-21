@@ -3,8 +3,13 @@ import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
+    const { HttpClientTestingModule } = await import('@angular/common/http/testing');
+    const { RouterTestingModule } = await import('@angular/router/testing');
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [
+        { provide: 'ActivatedRoute', useValue: {} }
+      ]
     }).compileComponents();
   });
 
@@ -14,16 +19,17 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'frontend2025' title`, () => {
+  it(`should have the correct title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('frontend2025');
+    expect(app.title).toEqual('Sports Management System');
   });
 
-  it('should render title', () => {
+  it('should render title in nav brand', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, frontend2025');
+    // The title is rendered in the nav brand anchor
+    expect(compiled.querySelector('.nav-brand a')?.textContent).toContain('Sports Management System');
   });
 });
