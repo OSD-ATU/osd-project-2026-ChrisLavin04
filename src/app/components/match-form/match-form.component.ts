@@ -141,4 +141,9 @@ export class MatchFormComponent implements OnInit {
   onCancel() {
     this.router.navigate(['/matches']);
   }
+
+  // Detect dark mode by checking the body class
+  isDarkMode(): boolean {
+    return document.body.classList.contains('dark-mode');
+  }
 }

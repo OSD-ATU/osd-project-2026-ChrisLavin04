@@ -3,6 +3,9 @@
     <div class="nav-brand">
       <a routerLink="/">{{ title }}</a>
     </div>
+    <button class="dark-toggle" (click)="toggleDarkMode()">
+      {{ darkMode ? 'Light Mode' : 'Dark Mode' }}
+    </button>
     <ul class="nav-menu">
       <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
       

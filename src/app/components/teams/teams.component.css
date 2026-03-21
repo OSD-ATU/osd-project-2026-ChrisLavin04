@@ -181,22 +181,15 @@ button {
   .teams-list table {
     display: none;
   }
-
+  
   /* Show and style cards on mobile */
   .team-card {
     display: block;
-    content: '';
-    display: block;
-  }
-}
-
-/* Card styles for mobile - will need to add via HTML template */
-@media (max-width: 768px) {
-  .team-card {
     background: white;
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
   }
 
   .team-card h3 {
@@ -215,11 +208,9 @@ button {
     display: flex;
     gap: 8px;
     margin-top: 15px;
-    flex-wrap: wrap;
   }
-
+  
   .team-card .actions button {
     flex: 1;
-    min-width: 80px;
   }
 }

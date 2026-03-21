@@ -173,4 +173,9 @@ export class PlayerFormComponent implements OnInit {
   onCancel() {
     this.router.navigate(['/players']);
   }
+
+  // Detect dark mode by checking the body class
+  isDarkMode(): boolean {
+    return document.body.classList.contains('dark-mode');
+  }
 }

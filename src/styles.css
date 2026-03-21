@@ -1,58 +1,235 @@
-/* Global Styles */
-* {
-  box-sizing: border-box;
+/* =====================
+   CSS Custom Properties
+   ===================== */
+:root {
+  --dark-bg: #23272a;
+  --dark-fg: #f3f6fa;
+  --dark-border: #2d333b;
+  --dark-card: #24292f;
+  --dark-header: #20232a;
+  --dark-table-hover: #23272a;
+  --dark-main-bg: #181a1b;
+  --blue: #2196f3;
+  --light-fg: #333;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+/* =====================
+   Dark Mode Global Styles
+   ===================== */
+body.dark-mode {
+  background: var(--dark-main-bg) !important;
+  color: #e0e0e0 !important;
+}
+body.dark-mode .navbar {
+  background-color: var(--dark-main-bg) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+body.dark-mode .nav-menu a,
+body.dark-mode .nav-brand a {
+  color: #e0e0e0 !important;
+}
+body.dark-mode .nav-menu a.active {
+  background-color: #333 !important;
+  border-bottom: 3px solid var(--blue) !important;
+}
+body.dark-mode .nav-menu a:hover {
+  background-color: #222 !important;
 }
 
+/* =====================
+   Dark Mode Card/Container Styles
+   ===================== */
+body.dark-mode .dashboard-card,
+body.dark-mode .card,
+body.dark-mode .player-card,
+body.dark-mode .team-card,
+body.dark-mode .edit-user-container,
+body.dark-mode .edit-form-container,
+body.dark-mode .edit-player-container,
+body.dark-mode .edit-team-container,
+body.dark-mode .users-container,
+body.dark-mode .form-wrapper,
+body.dark-mode .modal,
+body.dark-mode .dialog,
+body.dark-mode .mat-dialog-container {
+  background: var(--dark-bg) !important;
+  color: var(--dark-fg) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
+  border: 1px solid var(--dark-border) !important;
+}
+
+body.dark-mode form,
+body.dark-mode .form,
+body.dark-mode .form-group,
+body.dark-mode .form-control {
+  background: var(--dark-bg) !important;
+  color: var(--dark-fg) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--dark-border) !important;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: var(--dark-bg) !important;
+  color: var(--dark-fg) !important;
+  border: 1px solid #444 !important;
+}
+
+/* =====================
+   Dark Mode Table Styles
+   ===================== */
+body.dark-mode table thead,
+body.dark-mode .players-section thead,
+body.dark-mode .teams-list thead,
+body.dark-mode .standings-table thead,
+body.dark-mode .coached-teams-table thead {
+  background: var(--dark-header) !important;
+  color: #fff !important;
+}
+body.dark-mode table th,
+body.dark-mode .players-section th,
+body.dark-mode .teams-list th,
+body.dark-mode .standings-table th,
+body.dark-mode .coached-teams-table th {
+  color: #fff !important;
+  border-bottom: 2px solid #444 !important;
+}
+body.dark-mode table tr:hover,
+body.dark-mode .players-section tr:hover,
+body.dark-mode .teams-list tr:hover,
+body.dark-mode .standings-table tr:hover,
+body.dark-mode .coached-teams-table tr:hover {
+  background: var(--dark-table-hover) !important;
+}
+body.dark-mode th,
+body.dark-mode td {
+  color: #e0e0e0 !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .dashboard-card,
+body.dark-mode .players-list table,
+body.dark-mode .teams-list table,
+body.dark-mode .standings-table,
+body.dark-mode .coached-teams-table,
+body.dark-mode .matches-list table,
+body.dark-mode table {
+  background: var(--dark-card) !important;
+  color: var(--dark-fg) !important;
+  border-color: var(--dark-border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
+  transition: background 0.2s, color 0.2s;
+}
+
+body.dark-mode .main-content {
+  background-color: var(--dark-bg) !important;
+}
+
+body.dark-mode .team-info {
+  background: var(--dark-bg) !important;
+  color: var(--dark-fg) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
+}
+body.dark-mode .team-info h3,
+body.dark-mode .team-info p,
+body.dark-mode .players-section h4,
+body.dark-mode .section-header h4 {
+  color: var(--dark-fg) !important;
+}
+
+body.dark-mode .players-section table,
+body.dark-mode .players-section thead {
+  background: var(--dark-card) !important;
+  color: var(--dark-fg) !important;
+}
+body.dark-mode .players-section th,
+body.dark-mode .players-section td {
+  color: var(--dark-fg) !important;
+  border-bottom: 1px solid #333 !important;
+}
+body.dark-mode .players-section tr:hover {
+  background: var(--dark-table-hover) !important;
+}
+body.dark-mode .search-box input[type="text"] {
+  background: var(--dark-bg) !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #444 !important;
+}
+
+/* =====================
+   Simple dark mode toggle button styling
+   ===================== */
+.dark-toggle {
+  background: var(--dark-bg);
+  color: #ffd700;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 18px;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.dark-toggle:hover {
+  background: #ffd700;
+  color: var(--dark-bg);
+  border: 1px solid #ffd700;
+}
+body.dark-mode .dark-toggle {
+  background: #ffd700;
+  color: var(--dark-bg);
+  border: 1px solid #ffd700;
+}
+body.dark-mode .dark-toggle:hover {
+  background: var(--dark-bg);
+  color: #ffd700;
+  border: 1px solid #444;
+}
+
+/* =====================
+   Global Styles
+   ===================== */
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   background-color: #f5f6fa;
-  color: #333;
+  color: var(--light-fg);
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Responsive utilities */
 @media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-
-  /* Ensure content doesn't overflow on mobile */
-  * {
-    max-width: 100%;
-  }
-
-  /* Make buttons and inputs more touch-friendly */
-  button, input, select, textarea {
-    min-height: 44px;
-  }
-
-  /* Improve readability on mobile */
+  body { font-size: 14px; }
+  * { max-width: 100%; }
+  button, input, select, textarea { min-height: 44px; }
   h1 { font-size: 28px; }
   h2 { font-size: 24px; }
   h3 { font-size: 20px; }
   h4 { font-size: 18px; }
 }
 
-/* Hide scrollbars on mobile */
+/* Dark mode overrides for mobile cards (matches/users) */
+body.dark-mode .match-card,
+body.dark-mode .user-card {
+  background: var(--dark-card) !important;
+  color: var(--dark-fg) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+}
+body.dark-mode .match-card h3,
+body.dark-mode .user-card h3 {
+  color: var(--dark-fg) !important;
+}
+body.dark-mode .match-card p,
+body.dark-mode .user-card p {
+  color: #b0b8c1 !important;
+}
 @media (max-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 5px; }
 }

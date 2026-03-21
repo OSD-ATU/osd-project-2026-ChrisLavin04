@@ -1,5 +1,5 @@
 <div class="form-container">
-  <mat-card>
+  <mat-card [ngClass]="{'dark-card': isDarkMode()}">
     <mat-card-header>
       <mat-card-title>{{ isEditMode ? 'Edit Team' : 'Add New Team' }}</mat-card-title>
     </mat-card-header>
