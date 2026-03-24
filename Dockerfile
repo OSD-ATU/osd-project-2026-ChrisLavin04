@@ -1,7 +1,7 @@
-# line 3 initialises build stage and sets base image called build
-# using node here as base image
+# line 3 initialises build stage
 # S00251319 - Christopher Lavin
 FROM node:22.12-alpine AS build
+LABEL service="SportsManagementApp"
 
 # line 8 -if directory does not exist, WORKDIR creates it
 # line 8 path is relative to current working directory
@@ -10,7 +10,7 @@ WORKDIR /app
 COPY . .
 # line 12 install node libraries
 RUN npm install
-# line 14 same as ng build :-)
+# line 14 same as ng build
 RUN npm run build -- --configuration production
 # line 16 add another image to build base, the nginx web server
 FROM nginx:alpine
