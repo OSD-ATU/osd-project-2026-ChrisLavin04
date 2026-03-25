@@ -21,9 +21,8 @@ export interface RegisterData {
   providedIn: 'root'
 })
 export class AuthService {
-    /**
-     * Get current user's role
-     */
+     // Get current user's role
+     
     getRole(): string | null {
       return this.currentUserValue?.role || null;
     }
@@ -36,38 +35,30 @@ export class AuthService {
     private router: Router
   ) { }
 
-  /**
-   * Get user from localStorage on app initialization
-   */
+  
+  // Get user from localStorage on app initialization 
   private getUserFromStorage(): User | null {
     const userJson = localStorage.getItem('currentUser');
     return userJson ? JSON.parse(userJson) : null;
   }
 
-  /**
-   * Get current user value
-   */
+  // Get current user value
+
   get currentUserValue(): User | null {
     return this.currentUserSubject.value;
   }
 
-  /**
-   * Check if user is logged in
-   */
+  // Check if user is logged in
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  /**
-   * Get stored JWT token
-   */
+  // Get stored JWT token
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  /**
-   * Login user
-   */
+  // Login user
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(
@@ -80,9 +71,7 @@ export class AuthService {
       );
   }
 
-  /**
-   * Register new user
-   */
+  // Register new user
   register(data: RegisterData): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/register`, data)
       .pipe(
@@ -95,9 +84,7 @@ export class AuthService {
       );
   }
 
-  /**
-   * Logout user
-   */
+  // Logout user
   logout(): void {
     // Remove user data from localStorage
     localStorage.removeItem('token');
@@ -106,9 +93,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  /**
-   * Get current logged-in user from server
-   */
+  // Get current logged-in user from server
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/me`);
   }
